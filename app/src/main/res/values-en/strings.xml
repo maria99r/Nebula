@@ -19,4 +19,9 @@
     <string name="confirmar_salida">¿Are tou sure?</string>
     <string name="si">Yes</string>
     <string name="no">No</string>
+    <string name="principal">Go back</string>
+    <string name="alojamiento2">Tent</string>
+    <string name="Desplegable">Select an option</string>
+    <string name="Error_Guardar">Error saving data</string>
+    <string name="Exito_guardar">Saving data correct</string>
 </resources>

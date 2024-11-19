@@ -1,4 +1,4 @@
-package com.alanturing.nebula
+package com.alanturing.nebula.view
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,17 +43,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.alanturing.nebula.datos.ConfiguracionDataStore
-import com.alanturing.nebula.datos.DatosSeleccion
+import com.alanturing.nebula.R
+import com.alanturing.nebula.model.ConfiguracionDataStore
+import com.alanturing.nebula.model.DatosSeleccion
+import com.alanturing.nebula.model.Ruta
 import kotlinx.coroutines.launch
 
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun Configuracion(navController: NavController) {
+
     val context = LocalContext.current
     val configuracion = ConfiguracionDataStore(context)
     val scope = rememberCoroutineScope()
@@ -61,6 +66,12 @@ fun Configuracion(navController: NavController) {
     var tipoAlojamientoSeleccionado by rememberSaveable {  mutableIntStateOf(0) }
     var recibirNotificaciones by rememberSaveable { mutableStateOf(false) }
     var actividadSeleccionada by rememberSaveable { mutableStateOf("") }
+    var ciudad1Seleccion by rememberSaveable { mutableStateOf(false) }
+    var ciudad4Seleccion by rememberSaveable { mutableStateOf(false) }
+    var ciudad5Seleccion by rememberSaveable { mutableStateOf(false) }
+    var ciudad6Seleccion by rememberSaveable { mutableStateOf(false) }
+
+
 
     // lista de ciudades checkbox
     val ciudades = listOf(
@@ -69,8 +80,6 @@ fun Configuracion(navController: NavController) {
         context.getString(R.string.ciudad5),
         context.getString(R.string.ciudad6)
     )
-
-    // Crear lista mutable de opciones de ciudades
     val opcionesCiudades = ciudades.map {
         val checked = rememberSaveable { mutableStateOf(false) }
         DatosSeleccion(
@@ -80,25 +89,11 @@ fun Configuracion(navController: NavController) {
         )
     }
 
-
-    LaunchedEffect(Unit) {
-        configuracion.getCiudadesSeleccionadas.collect { ciudadesGuardadas ->
-            opcionesCiudades.forEach { opcion ->
-                val ciudadGuardada = ciudadesGuardadas.find { it.label == opcion.label }
-                if (ciudadGuardada != null) {
-                    // Actualizar el estado de la opción
-                    opcion.checked = ciudadGuardada.checked
-                    opcion.onCheckedChange = { isChecked ->
-                        opcion.checked = isChecked
-                        scope.launch {
-                            configuracion.saveCiudadesSeleccionadas(opcionesCiudades)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    // lista actividades - dropdown
+    val opcionesAlojamiento = listOf(
+        context.getString(R.string.alojamiento1),
+        context.getString(R.string.alojamiento2),
+    )
 
     // lista actividades - dropdown
     val opcionesActividades = listOf(
@@ -111,9 +106,26 @@ fun Configuracion(navController: NavController) {
     // cargo los datos del dataStore
     LaunchedEffect(Unit) {
         configuracion.getAlojamiento.collect { tipoAlojamientoSeleccionado = it ?: 0 }
-        configuracion.getNotificaciones.collect { recibirNotificaciones = it }
-        configuracion.getActividad.collect { actividadSeleccionada = it ?: "" }
     }
+    LaunchedEffect(Unit) {
+        configuracion.getNotificaciones.collect { recibirNotificaciones = it }
+    }
+    LaunchedEffect(Unit) {
+        configuracion.getActividad.collect { actividadSeleccionada = it ?: ""}
+    }
+    LaunchedEffect(Unit) {
+        configuracion.getCiudad1.collect { ciudad1Seleccion = it }
+    }
+    LaunchedEffect(Unit) {
+        configuracion.getCiudad4.collect { ciudad4Seleccion = it }
+    }
+    LaunchedEffect(Unit) {
+        configuracion.getCiudad5.collect { ciudad5Seleccion = it }
+    }
+    LaunchedEffect(Unit) {
+        configuracion.getCiudad6.collect { ciudad6Seleccion = it }
+    }
+
 
     // titulos de los apartados
     val titulo by remember { mutableStateOf(context.getString(R.string.configuracion_titulo)) }
@@ -148,6 +160,12 @@ fun Configuracion(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
     ) {
+        Button(
+            onClick = { navController.navigate(Ruta.Principal.ruta) },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(id = R.string.principal))
+        }
         Spacer(modifier = Modifier.height(30.dp))
 
         Row(
@@ -166,7 +184,7 @@ fun Configuracion(navController: NavController) {
 
         DespliegaRadioButton (
             texto = tituloTipoTienda,
-            opciones = listOf("Bungalow", "Tienda de campaña"),
+            opciones = opcionesAlojamiento,
             radioButtonSeleccionado = tipoAlojamientoSeleccionado,
             alSeleccionar = { tipoAlojamientoSeleccionado = it }
         )
@@ -174,19 +192,39 @@ fun Configuracion(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // CIUDADES CHECHBOX
-        CheckboxList(options = opcionesCiudades, listTitle = tituloSeleccionaCiudad)
+        //CheckboxList(options = opcionesCiudades, listTitle = tituloSeleccionaCiudad)
+
+        DespliegaCheckBox(
+            context.getString(R.string.ciudad1),
+            ciudad1Seleccion
+        ) { ciudad1Seleccion = it }
+        DespliegaCheckBox(
+            context.getString(R.string.ciudad4),
+            ciudad4Seleccion
+        ) { ciudad4Seleccion = it }
+        DespliegaCheckBox(
+            context.getString(R.string.ciudad5),
+            ciudad5Seleccion
+        ) { ciudad5Seleccion = it }
+        DespliegaCheckBox(
+            context.getString(R.string.ciudad6),
+            ciudad6Seleccion
+        ) { ciudad6Seleccion = it }
 
         Spacer(modifier = Modifier.height(16.dp))
+
 
         // Alquilar actividades - Dropdown
         DespliegaDropdown(
             texto = tituloActividad,
+            textoLabel = context.getString(R.string.Desplegable),
             opciones = opcionesActividades,
             opcionSeleccionada = actividadSeleccionada,
             alSeleccionar = {  actividad -> actividadSeleccionada = actividad  }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
 
         // Preferencia notificaciones - Switch
         DespliegaSwitch(
@@ -198,20 +236,24 @@ fun Configuracion(navController: NavController) {
         Spacer(modifier = Modifier.height(8.dp))
 
 
-        // BOTON para guardar configuraciones
+        // BOTON
         Button(onClick = {
             scope.launch {
                 configuracion.saveAlojamiento(tipoAlojamientoSeleccionado)
                 configuracion.saveActividad(actividadSeleccionada)
                 configuracion.saveNotificaciones(recibirNotificaciones)
                 configuracion.saveCiudadesSeleccionadas(opcionesCiudades)
-                // Comprobación: Mostrar Toast de acuerdo a la condición
-                if (tipoAlojamientoSeleccionado == 0 && actividadSeleccionada.isNotEmpty()) {
-                    Toast.makeText(context, "Datos guardados correctamente", Toast.LENGTH_LONG).show()
+                configuracion.saveCiudad1(ciudad1Seleccion)
+                configuracion.saveCiudad4(ciudad4Seleccion)
+                configuracion.saveCiudad5(ciudad5Seleccion)
+                configuracion.saveCiudad6(ciudad6Seleccion)
+
+                //toast
+                if (actividadSeleccionada.isNotEmpty()) {
+                    Toast.makeText(context, context.getString(R.string.Error_Guardar), Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(context, "Faltan datos por completar", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.Exito_guardar), Toast.LENGTH_SHORT).show()
                 }
-                navController.navigate("principal")
             }
         }) {
             Text(
@@ -233,7 +275,7 @@ fun CheckboxList(options: List<DatosSeleccion>, listTitle: String) {
             style = MaterialTheme.typography.bodyLarge)
         Spacer(Modifier.size(16.dp))
         options.forEach { option ->
-            LabelledCheckbox(
+            DatosCheckbox(
                 checked = option.checked,
                 onCheckedChange = option.onCheckedChange,
                 label = option.label,
@@ -242,8 +284,11 @@ fun CheckboxList(options: List<DatosSeleccion>, listTitle: String) {
         }
     }
 }
+
+
+
 @Composable
-fun LabelledCheckbox(
+fun DatosCheckbox(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     label: String,
@@ -266,6 +311,9 @@ fun LabelledCheckbox(
         Text(label)
     }
 }
+
+
+
 
 // Crea un checkbox
 @Composable
@@ -299,9 +347,9 @@ fun DespliegaCheckBox(
 // crea un switch
 @Composable
 fun DespliegaSwitch(
-    texto: String, // Nombre o etiqueta del switch
-    switchSeleccionado: Boolean, // Estado actual del switch
-    alSeleccionar: (Boolean) -> Unit // Callback para actualizar el estado
+    texto: String,
+    switchSeleccionado: Boolean,
+    alSeleccionar: (Boolean) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
@@ -326,14 +374,16 @@ fun DespliegaSwitch(
 // crea lista desplegable
 @Composable
 fun DespliegaDropdown(
-    texto: String, // Nombre o etiqueta del Dropdown
-    opciones: List<String>, // Lista de opciones para seleccionar
-    opcionSeleccionada: String, // Opción actualmente seleccionada
-    alSeleccionar: (String) -> Unit // Callback para actualizar la opción seleccionada
+    texto: String,
+    textoLabel:String,
+    opciones: List<String>,
+    opcionSeleccionada: String,
+    alSeleccionar: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     Column {
+
         Text(
             text = texto,
             style = MaterialTheme.typography.titleMedium,
@@ -342,7 +392,7 @@ fun DespliegaDropdown(
         Box {
             // Botón para desplegar el menú
             TextButton(onClick = { expanded = true }) {
-                Text(text = opcionSeleccionada.ifEmpty { "Selecciona una opción" })
+                Text(text = opcionSeleccionada.ifEmpty { textoLabel })
             }
             DropdownMenu(
                 expanded = expanded,
@@ -366,10 +416,10 @@ fun DespliegaDropdown(
 
 @Composable
 fun DespliegaRadioButton(
-    texto : String, // nombre,
-    opciones: List<String>, // Lista de opciones para RadioButton
-    radioButtonSeleccionado : Int, // opcion seleccionada
-    alSeleccionar : (Int) -> Unit  // actualiza la seleccion
+    texto : String,
+    opciones: List<String>,
+    radioButtonSeleccionado : Int,
+    alSeleccionar : (Int) -> Unit
 ){
     Column {
         Text(

@@ -1,4 +1,4 @@
-    package com.alanturing.nebula.datos;
+    package com.alanturing.nebula.model;
 
     import kotlin.Unit;
 
