@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nombre_app">Nebula</string>
+    <string name="acerca_titulo">About Nebula</string>
+    <string name="acerca_autor">"Student of 2nd year of Multiplatform Application Development in the CFCFP Alan Turing center in the course 2024/25. \n\nI am passionate about the world of astronomy and travel, so I decided to combine them while learning Android Studio. "</string>
+    <string name="ayuda_titulo">Help</string>
+    <string name="ayuda_contenido">Welcome to our camping app, your ultimate guide to discovering and booking camping experiences around the world. With this app, you have access to a wide variety of camping options, spread across different countries and unique environments, from tranquil forests to stunning beaches and remote mountains. \n\nExplore detailed information about each site, including its features, amenities, and available activities.  Our application not only allows you to check the availability of each campsite, but also facilitates the process of booking your stay, adjusting to your needs and preferences. You can select from different types of accommodations, from tents and cabins to luxurious glampings, and add extra services such as private transportation from your location, special meals tailored to your preferences, and additional camping kits so you don\'t miss anything during your stay.  \n\nIn addition, each location offers a set of specific services that you can add, such as guided tours, hiking excursions, sports activities and special events. With a personalized recommendation system, the app suggests the best campsites based on your interests and the season, so you will always find the perfect experience.  \n\nThe app is available in multiple languages and allows secure payments in multiple currencies, making it easy to organize your adventure no matter where you are.</string>
+    <string name="select_tipo_tienda">Select accommodation</string>
+    <string name="select_ciudad">Select your favourite cities</string>
+    <string name="alquilar_actividades">Favourite activity</string>
+    <string name="recibir_notificaciones">Notification preferences</string>
+    <string name="guardar_configuracion">Save configuration</string>
+    <string name="configuracion_titulo">Configuration</string>
+    <string name="actividad2">Hiking</string>
+    <string name="configuracion">Configuration</string>
+    <string name="ayuda">Help</string>
+    <string name="acerca_de">About</string>
+    <string name="salir">Exit</string>
+    <string name="confirmar_salida">¿Are tou sure?</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+</resources>

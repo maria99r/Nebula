@@ -1,0 +1,33 @@
+<resources>
+    <string name="nombre_app">Nebula</string>
+    <string name="acerca_titulo">Acerca de Nebula</string>
+    <string name="acerca_licencia" translatable="false">© 2024 María Rosales Román</string>
+    <string name="acerca_autor">Estudiante de 2º curso de Desarrollo de Aplicaciones Multiplataforma en el centro CFCFP Alan Turing en el curso 2024/25.\n\nMe apasiona el mundo de la astronomia y los viajes, por lo que he decidido unirlos a la vez que aprendo Android Studio.\n\n</string>
+    <string name="ayuda_titulo">Ayuda</string>
+    <string name="ayuda_contenido">Bienvenidos a nuestra aplicación de campings, tu guía definitiva para descubrir y reservar experiencias de camping en todo el mundo. Con esta app, tienes acceso a una amplia variedad de opciones de campings, distribuidos en distintos países y entornos únicos, desde bosques tranquilos hasta playas impresionantes y montañas remotas.\n\n Explora la información detallada de cada sitio, incluyendo sus características, comodidades, y actividades disponibles.  Nuestra aplicación no solo te permite consultar la disponibilidad de cada camping, sino que también facilita el proceso de reserva de tu estancia, ajustándose a tus necesidades y preferencias. Puedes seleccionar entre diferentes tipos de alojamiento, desde carpas y cabañas hasta lujosos glampings, y añadir servicios extra como transporte privado desde tu ubicación, comidas especiales adaptadas a tus preferencias, y kits de camping adicionales para que no te falte nada durante tu estancia.  \n \n Además, cada ubicación ofrece un conjunto de servicios específicos que puedes agregar, como visitas guiadas, excursiones de senderismo, actividades deportivas y eventos especiales. Con un sistema de recomendaciones personalizado, la app te sugiere los mejores campings según tus intereses y la temporada, para que siempre encuentres la experiencia perfecta.  \n \n La app está disponible en varios idiomas y permite realizar pagos seguros en diversas monedas, facilitando la organización de tu aventura sin importar dónde te encuentres. \n\nCon notificaciones en tiempo real, recibirás actualizaciones sobre tus reservas, descuentos especiales, y nuevos destinos.  ¡Explora el mundo de los campings y reserva una experiencia inolvidable con solo unos clics!</string>
+    <string name="ciudad1" translatable="false">Málaga</string>
+    <string name="ciudad2" translatable="false">Barcelona</string>
+    <string name="ciudad3" translatable="false">Cádiz</string>
+    <string name="app_name" translatable="false">Nebula</string>
+    <string name="select_tipo_tienda">Tipo de alojamiento preferido</string>
+    <string name="select_ciudad">Elige tus ciudades favoritas para visitar</string>
+    <string name="alquilar_actividades">Actividad de mayor interés</string>
+    <string name="recibir_notificaciones">¿Desea recibir notificaciones?</string>
+    <string name="guardar_configuracion">Guarda Configuración</string>
+    <string name="configuracion_titulo">Configuración</string>
+    <string name="ciudad4" translatable="false">Lisboa</string>
+    <string name="ciudad5" translatable="false">Asturias</string>
+    <string name="ciudad6" translatable="false">Huelva</string>
+    <string name="actividad1" translatable="false">Surf</string>
+    <string name="actividad2">Senderismo</string>
+    <string name="actividad3" translatable="false">Paddel surf</string>
+    <string name="actividad4" translatable="false">Kayak</string>
+    <string name="configuracion">Configuracion</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="acerca_de">Acerca de</string>
+    <string name="salir">Salir</string>
+    <string name="confirmar_salida">¿Estás seguro de que quieres salir?</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+
+</resources>
