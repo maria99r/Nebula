@@ -5,4 +5,5 @@ sealed class Ruta(val ruta: String) {
     data object Configuracion : Ruta("configuracion")
     data object Ayuda : Ruta("ayuda")
     data object AcercaDe : Ruta("acercaDe")
+    data object Pokedex : Ruta("pokedex")
 }

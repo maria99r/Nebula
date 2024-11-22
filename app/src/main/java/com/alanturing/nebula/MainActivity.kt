@@ -18,7 +18,9 @@ import com.alanturing.nebula.model.Ruta
 import com.alanturing.nebula.view.AcercaDe
 import com.alanturing.nebula.view.Ayuda
 import com.alanturing.nebula.view.Configuracion
+import com.alanturing.nebula.view.Pokemon
 import com.alanturing.nebula.view.Principal
+import com.alanturing.nebula.viewModel.PokemonViewModel
 
 val Context.dataStore by preferencesDataStore("configuracion")
 
@@ -31,11 +33,13 @@ class MainActivity : ComponentActivity() {
             NebulaTheme {
                 Surface {
                      val navController = rememberNavController()
+                    val viewModel = PokemonViewModel()
                     NavHost(navController = navController, startDestination = Ruta.Principal.ruta) {
                         composable(Ruta.Principal.ruta) { Principal(navController) }
                         composable(Ruta.Configuracion.ruta) { Configuracion(navController) }
                         composable(Ruta.Ayuda.ruta) { Ayuda(navController) }
                         composable(Ruta.AcercaDe.ruta) { AcercaDe(navController) }
+                        composable(Ruta.Pokedex.ruta) { Pokemon(viewModel, navController) }
                     }
                 }
             }

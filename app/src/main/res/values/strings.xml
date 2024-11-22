@@ -35,5 +35,6 @@
     <string name="Desplegable">Selecciona una opcion</string>
     <string name="Error_Guardar">Error al guardar los datos</string>
     <string name="Exito_guardar">Datos guardados correctamente</string>
+    <string name="pokedex" translatable="false">Pokedex</string>
 
 </resources>

@@ -42,10 +42,6 @@ import com.alanturing.nebula.dialogos.DialogAlertGeneric
 import com.alanturing.nebula.model.Ruta
 import kotlin.system.exitProcess
 
-
-// pagina principasl con botonces con las distintas paginas, con iconos y estilado
-// + tarjeta pasra salir que sale un dialogo
-
 // IMAGEN LOGO
 @Composable
 fun Logo() {
@@ -56,7 +52,6 @@ fun Logo() {
         contentDescription = null
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,9 +90,9 @@ fun Principal(navigationController: NavHostController) {
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     MenuCardButton(
-                        icon = R.drawable.configuracionicon,
-                        text = stringResource(id = R.string.configuracion),
-                        onClick = { navigationController.navigate(Ruta.Configuracion.ruta) }
+                        icon = R.drawable.pokedex,
+                        text = stringResource(id = R.string.pokedex),
+                        onClick = { navigationController.navigate(Ruta.Pokedex.ruta) }
                     )
                     MenuCardButton(
                         icon = R.drawable.informacion,
@@ -117,10 +112,22 @@ fun Principal(navigationController: NavHostController) {
                         onClick = { navigationController.navigate(Ruta.AcercaDe.ruta) }
                     )
                     MenuCardButton(
+                        icon = R.drawable.configuracionicon,
+                        text = stringResource(id = R.string.configuracion),
+                        onClick = { navigationController.navigate(Ruta.Configuracion.ruta) }
+                    )
+                }
+                // Tercera fila
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                ) {
+                    MenuCardButton(
                         icon = R.drawable.salida,
                         text = stringResource(id = R.string.salir),
                         onClick = { showDialog = true }
                     )
+
                 }
             }
         }

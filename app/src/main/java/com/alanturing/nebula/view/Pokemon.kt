@@ -9,10 +9,13 @@ import com.alanturing.nebula.viewModel.PokemonViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.HorizontalDivider
+import androidx.navigation.NavHostController
 
 
 @Composable
-fun Pokemon(viewModel: PokemonViewModel) {
+fun Pokemon(viewModel: PokemonViewModel, navigationController: NavHostController) {
     val pokemons by viewModel.pokemons.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
@@ -24,13 +27,13 @@ fun Pokemon(viewModel: PokemonViewModel) {
             // Show loading indicator or placeholder
             Text(text = "Loading...")
         } else {
-            // Display the list of credit cards
+            // Display the list of pokemons
             LazyColumn {
                 items(pokemons) { pokemon ->
                     Text(text = pokemon.name)
-                    Text(text = pokemon.num)
-                    Text(text = pokemon.type)
-                    Divider() // Add a divider between items
+                    Text(text = pokemon.num.toString())
+                    Text(text = pokemon.type.toString())
+                    HorizontalDivider() // Add a divider between items
                 }
             }
         }
@@ -38,4 +41,3 @@ fun Pokemon(viewModel: PokemonViewModel) {
 }
 
 
-}
