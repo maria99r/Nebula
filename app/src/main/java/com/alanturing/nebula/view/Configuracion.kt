@@ -63,14 +63,13 @@ fun Configuracion(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     // configurables
-    var tipoAlojamientoSeleccionado by rememberSaveable {  mutableIntStateOf(0) }
+    var tipoAlojamientoSeleccionado by rememberSaveable { mutableIntStateOf(0) }
     var recibirNotificaciones by rememberSaveable { mutableStateOf(false) }
     var actividadSeleccionada by rememberSaveable { mutableStateOf("") }
     var ciudad1Seleccion by rememberSaveable { mutableStateOf(false) }
     var ciudad4Seleccion by rememberSaveable { mutableStateOf(false) }
     var ciudad5Seleccion by rememberSaveable { mutableStateOf(false) }
     var ciudad6Seleccion by rememberSaveable { mutableStateOf(false) }
-
 
 
     // lista de ciudades checkbox
@@ -111,7 +110,7 @@ fun Configuracion(navController: NavController) {
         configuracion.getNotificaciones.collect { recibirNotificaciones = it }
     }
     LaunchedEffect(Unit) {
-        configuracion.getActividad.collect { actividadSeleccionada = it ?: ""}
+        configuracion.getActividad.collect { actividadSeleccionada = it ?: "" }
     }
     LaunchedEffect(Unit) {
         configuracion.getCiudad1.collect { ciudad1Seleccion = it }
@@ -138,42 +137,24 @@ fun Configuracion(navController: NavController) {
     // scroll de pantalla
     val scrollState = rememberScrollState()
 
-    // IMAGEN LOGO
-    @Composable
-    fun ImgCamping() {
-        val image = painterResource(R.drawable.img_camping_bajo)
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = image,
-            contentDescription = null
-        )
-    }
-
-
     // ELEMENTOS PANTALLA
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
             .verticalScroll(scrollState)
-            .padding(20.dp),
+            .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
     ) {
-        Button(
-            onClick = { navController.navigate(Ruta.Principal.ruta) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(id = R.string.principal))
-        }
-        Spacer(modifier = Modifier.height(30.dp))
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row(
             modifier = Modifier.height(50.dp),
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
         ) {
-
             // TITULO PAGINA
             Text(
                 text = titulo,
@@ -182,7 +163,9 @@ fun Configuracion(navController: NavController) {
             )
         }
 
-        DespliegaRadioButton (
+        Spacer(modifier = Modifier.height(10.dp))
+
+        DespliegaRadioButton(
             texto = tituloTipoTienda,
             opciones = opcionesAlojamiento,
             radioButtonSeleccionado = tipoAlojamientoSeleccionado,
@@ -194,22 +177,33 @@ fun Configuracion(navController: NavController) {
         // CIUDADES CHECHBOX
         //CheckboxList(options = opcionesCiudades, listTitle = tituloSeleccionaCiudad)
 
-        DespliegaCheckBox(
-            context.getString(R.string.ciudad1),
-            ciudad1Seleccion
-        ) { ciudad1Seleccion = it }
-        DespliegaCheckBox(
-            context.getString(R.string.ciudad4),
-            ciudad4Seleccion
-        ) { ciudad4Seleccion = it }
-        DespliegaCheckBox(
-            context.getString(R.string.ciudad5),
-            ciudad5Seleccion
-        ) { ciudad5Seleccion = it }
-        DespliegaCheckBox(
-            context.getString(R.string.ciudad6),
-            ciudad6Seleccion
-        ) { ciudad6Seleccion = it }
+        Column (
+            Modifier.align(Alignment.Start).padding(start = 10.dp)
+        ) {
+            Text(
+                text = tituloSeleccionaCiudad,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.tertiary
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DespliegaCheckBox(
+                context.getString(R.string.ciudad1),
+                ciudad1Seleccion
+            ) { ciudad1Seleccion = it }
+            DespliegaCheckBox(
+                context.getString(R.string.ciudad4),
+                ciudad4Seleccion
+            ) { ciudad4Seleccion = it }
+            DespliegaCheckBox(
+                context.getString(R.string.ciudad5),
+                ciudad5Seleccion
+            ) { ciudad5Seleccion = it }
+            DespliegaCheckBox(
+                context.getString(R.string.ciudad6),
+                ciudad6Seleccion
+            ) { ciudad6Seleccion = it }
+        }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -220,11 +214,10 @@ fun Configuracion(navController: NavController) {
             textoLabel = context.getString(R.string.Desplegable),
             opciones = opcionesActividades,
             opcionSeleccionada = actividadSeleccionada,
-            alSeleccionar = {  actividad -> actividadSeleccionada = actividad  }
+            alSeleccionar = { actividad -> actividadSeleccionada = actividad }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
 
         // Preferencia notificaciones - Switch
         DespliegaSwitch(
@@ -242,24 +235,34 @@ fun Configuracion(navController: NavController) {
                 configuracion.saveAlojamiento(tipoAlojamientoSeleccionado)
                 configuracion.saveActividad(actividadSeleccionada)
                 configuracion.saveNotificaciones(recibirNotificaciones)
-                configuracion.saveCiudadesSeleccionadas(opcionesCiudades)
+                // configuracion.saveCiudadesSeleccionadas(opcionesCiudades)
                 configuracion.saveCiudad1(ciudad1Seleccion)
                 configuracion.saveCiudad4(ciudad4Seleccion)
                 configuracion.saveCiudad5(ciudad5Seleccion)
                 configuracion.saveCiudad6(ciudad6Seleccion)
 
                 //toast
-                if (actividadSeleccionada.isNotEmpty()) {
-                    Toast.makeText(context, context.getString(R.string.Error_Guardar), Toast.LENGTH_LONG).show()
+                if (actividadSeleccionada.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.Error_Guardar),
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
-                    Toast.makeText(context, context.getString(R.string.Exito_guardar), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.Exito_guardar),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
+            navController.navigate(Ruta.Principal.ruta)
         }) {
             Text(
                 text = tituloGuardarConfi
             )
         }
+
 
     }
 }
@@ -272,7 +275,8 @@ fun CheckboxList(options: List<DatosSeleccion>, listTitle: String) {
             listTitle,
             textAlign = TextAlign.Justify,
             color = MaterialTheme.colorScheme.secondary,
-            style = MaterialTheme.typography.bodyLarge)
+            style = MaterialTheme.typography.bodyLarge
+        )
         Spacer(Modifier.size(16.dp))
         options.forEach { option ->
             DatosCheckbox(
@@ -284,7 +288,6 @@ fun CheckboxList(options: List<DatosSeleccion>, listTitle: String) {
         }
     }
 }
-
 
 
 @Composable
@@ -313,31 +316,35 @@ fun DatosCheckbox(
 }
 
 
-
-
 // Crea un checkbox
 @Composable
 fun DespliegaCheckBox(
-    texto : String, // nombre,
-    checkboxSeleccionado : Boolean,  // si está marcado o no
-    alSeleccionar : (Boolean) -> Unit  // funcion que modifica la variable de estado
-){
+    texto: String, // nombre,
+    checkboxSeleccionado: Boolean,  // si está marcado o no
+    alSeleccionar: (Boolean) -> Unit  // funcion que modifica la variable de estado
+) {
     Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.align(Alignment.Start)
+        ) {
             Checkbox(
                 checked = checkboxSeleccionado,
                 onCheckedChange = { isChecked
-                    -> alSeleccionar(isChecked) },
+                    ->
+                    alSeleccionar(isChecked)
+                },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.primary,
+                    checkedColor = MaterialTheme.colorScheme.secondary,
                     uncheckedColor = MaterialTheme.colorScheme.secondary
+                ),
+
                 )
-            )
             // Texto del checkbox
             Text(
                 text = texto,
                 textAlign = TextAlign.Left,
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyLarge
             )
         }
@@ -355,14 +362,14 @@ fun DespliegaSwitch(
         Text(
             text = texto,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.tertiary
         )
         Spacer(modifier = Modifier.width(10.dp))
         Switch(
             checked = switchSeleccionado,
             onCheckedChange = { alSeleccionar(it) },
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                checkedThumbColor = MaterialTheme.colorScheme.secondary,
                 uncheckedThumbColor = MaterialTheme.colorScheme.secondary
             )
         )
@@ -375,7 +382,7 @@ fun DespliegaSwitch(
 @Composable
 fun DespliegaDropdown(
     texto: String,
-    textoLabel:String,
+    textoLabel: String,
     opciones: List<String>,
     opcionSeleccionada: String,
     alSeleccionar: (String) -> Unit
@@ -387,7 +394,7 @@ fun DespliegaDropdown(
         Text(
             text = texto,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.tertiary
         )
         Box {
             // Botón para desplegar el menú
@@ -413,22 +420,22 @@ fun DespliegaDropdown(
 }
 
 
-
 @Composable
 fun DespliegaRadioButton(
-    texto : String,
+    texto: String,
     opciones: List<String>,
-    radioButtonSeleccionado : Int,
-    alSeleccionar : (Int) -> Unit
-){
+    radioButtonSeleccionado: Int,
+    alSeleccionar: (Int) -> Unit
+) {
     Column {
         Text(
             text = texto,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.tertiary
         )
         opciones.forEachIndexed() { index, opcion ->
             Row(verticalAlignment = Alignment.CenterVertically) {
+
                 RadioButton(
                     selected = index == radioButtonSeleccionado,
                     onClick = { alSeleccionar(index) },
@@ -436,12 +443,25 @@ fun DespliegaRadioButton(
                         selectedColor = MaterialTheme.colorScheme.primary
                     )
                 )
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = opcion,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.secondary
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
     }
+}
+
+
+// IMAGEN
+@Composable
+fun ImgCamping2() {
+    val image = painterResource(R.drawable.img_camping_bajo)
+    Image(
+        modifier = Modifier.fillMaxSize(),
+        painter = image,
+        contentDescription = null
+    )
 }

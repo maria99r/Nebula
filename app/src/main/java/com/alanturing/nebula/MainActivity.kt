@@ -29,10 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NebulaTheme {
-
-                Surface(
-                    // modificadores, colores etc
-                ) {
+                Surface {
                      val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = Ruta.Principal.ruta) {
                         composable(Ruta.Principal.ruta) { Principal(navController) }

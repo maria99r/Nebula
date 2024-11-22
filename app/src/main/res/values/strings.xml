@@ -13,7 +13,7 @@
     <string name="select_ciudad">Elige tus ciudades favoritas para visitar</string>
     <string name="alquilar_actividades">Actividad de mayor interés</string>
     <string name="recibir_notificaciones">¿Desea recibir notificaciones?</string>
-    <string name="guardar_configuracion">Guarda Configuración</string>
+    <string name="guardar_configuracion">Guardar configuración</string>
     <string name="configuracion_titulo">Configuración</string>
     <string name="ciudad4" translatable="false">Lisboa</string>
     <string name="ciudad5" translatable="false">Asturias</string>
@@ -22,7 +22,7 @@
     <string name="actividad2">Senderismo</string>
     <string name="actividad3" translatable="false">Paddel surf</string>
     <string name="actividad4" translatable="false">Kayak</string>
-    <string name="configuracion">Configuracion</string>
+    <string name="configuracion">Configuración</string>
     <string name="ayuda">Ayuda</string>
     <string name="acerca_de">Acerca de</string>
     <string name="salir">Salir</string>
