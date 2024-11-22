@@ -1,3 +1,8 @@
 package com.alanturing.nebula.model.pokedex
 
-annotation class ClientePokemon()
+import retrofit2.http.GET
+
+interface ClientePokemon {
+    @GET("pokemos")
+    suspend fun getDatosPokemon(): List<DatosPokemon>
+}

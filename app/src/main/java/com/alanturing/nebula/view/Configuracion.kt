@@ -62,7 +62,6 @@ fun Configuracion(navController: NavController) {
     val configuracion = ConfiguracionDataStore(context)
     val scope = rememberCoroutineScope()
 
-    // configurables
     var tipoAlojamientoSeleccionado by rememberSaveable { mutableIntStateOf(0) }
     var recibirNotificaciones by rememberSaveable { mutableStateOf(false) }
     var actividadSeleccionada by rememberSaveable { mutableStateOf("") }
@@ -72,7 +71,7 @@ fun Configuracion(navController: NavController) {
     var ciudad6Seleccion by rememberSaveable { mutableStateOf(false) }
 
 
-    // lista de ciudades checkbox
+    /*// lista de ciudades checkbox
     val ciudades = listOf(
         context.getString(R.string.ciudad1),
         context.getString(R.string.ciudad4),
@@ -86,9 +85,9 @@ fun Configuracion(navController: NavController) {
             onCheckedChange = { checked.value = it },
             label = it,
         )
-    }
+    }*/
 
-    // lista actividades - dropdown
+    // lista alojamiento
     val opcionesAlojamiento = listOf(
         context.getString(R.string.alojamiento1),
         context.getString(R.string.alojamiento2),
@@ -124,7 +123,6 @@ fun Configuracion(navController: NavController) {
     LaunchedEffect(Unit) {
         configuracion.getCiudad6.collect { ciudad6Seleccion = it }
     }
-
 
     // titulos de los apartados
     val titulo by remember { mutableStateOf(context.getString(R.string.configuracion_titulo)) }
@@ -204,9 +202,7 @@ fun Configuracion(navController: NavController) {
             ) { ciudad6Seleccion = it }
         }
 
-
         Spacer(modifier = Modifier.height(16.dp))
-
 
         // Alquilar actividades - Dropdown
         DespliegaDropdown(
@@ -227,7 +223,6 @@ fun Configuracion(navController: NavController) {
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-
 
         // BOTON
         Button(onClick = {
