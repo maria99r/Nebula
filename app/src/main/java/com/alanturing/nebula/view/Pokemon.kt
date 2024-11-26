@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -44,7 +45,6 @@ import com.alanturing.nebula.model.pokedex.DatosPokemon
 @Composable
 fun Pokemon(viewModel: PokemonViewModel, navigationController: NavHostController) {
     val pokemons by viewModel.pokemons.observeAsState(emptyList())
-
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -63,17 +63,10 @@ fun Pokemon(viewModel: PokemonViewModel, navigationController: NavHostController
         if (pokemons.isEmpty()) {
             // Show loading indicator or placeholder
             Text(text = "Loading...")
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         } else {
             // Display the list of pokemons
             PokemonList(pokemons)
-            /*LazyColumn {
-                items(pokemons) { pokemon ->
-                    Text(text = pokemon.name)
-                    Text(text = pokemon.num.toString())
-                    Text(text = pokemon.type.toString())
-                    HorizontalDivider() // Add a divider between items
-                }
-            }*/
         }
     }
 }
