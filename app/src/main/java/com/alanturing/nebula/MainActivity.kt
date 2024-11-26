@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alanturing.nebula.ui.theme.NebulaTheme
-import com.alanturing.nebula.model.Ruta
+import com.alanturing.nebula.model.Rutas
 import com.alanturing.nebula.view.AcercaDe
 import com.alanturing.nebula.view.Ayuda
 import com.alanturing.nebula.view.Configuracion
@@ -34,12 +34,12 @@ class MainActivity : ComponentActivity() {
                 Surface {
                      val navController = rememberNavController()
                     val viewModel = PokemonViewModel()
-                    NavHost(navController = navController, startDestination = Ruta.Principal.ruta) {
-                        composable(Ruta.Principal.ruta) { Principal(navController) }
-                        composable(Ruta.Configuracion.ruta) { Configuracion(navController) }
-                        composable(Ruta.Ayuda.ruta) { Ayuda(navController) }
-                        composable(Ruta.AcercaDe.ruta) { AcercaDe(navController) }
-                        composable(Ruta.Pokedex.ruta) { Pokemon(viewModel, navController) }
+                    NavHost(navController = navController, startDestination = Rutas.Principal.ruta) {
+                        composable(Rutas.Principal.ruta) { Principal(navController) }
+                        composable(Rutas.Configuracion.ruta) { Configuracion(navController) }
+                        composable(Rutas.Ayuda.ruta) { Ayuda(navController) }
+                        composable(Rutas.AcercaDe.ruta) { AcercaDe(navController) }
+                        composable(Rutas.Pokedex.ruta) { Pokemon(viewModel, navController) }
                     }
                 }
             }
