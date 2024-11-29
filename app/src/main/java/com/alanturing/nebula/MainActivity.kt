@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +21,9 @@ import com.alanturing.nebula.view.Ayuda
 import com.alanturing.nebula.view.Configuracion
 import com.alanturing.nebula.view.Pokemon
 import com.alanturing.nebula.view.Principal
+import com.alanturing.nebula.view.InicioSesion
+import com.alanturing.nebula.view.Registro
+import com.alanturing.nebula.viewModel.AuthViewModel
 import com.alanturing.nebula.viewModel.PokemonViewModel
 
 val Context.dataStore by preferencesDataStore("configuracion")
@@ -32,14 +36,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             NebulaTheme {
                 Surface {
-                     val navController = rememberNavController()
+                    val navController = rememberNavController()
+                    val authViewModel : AuthViewModel by viewModels()
                     val viewModel = PokemonViewModel()
                     NavHost(navController = navController, startDestination = Rutas.Principal.ruta) {
-                        composable(Rutas.Principal.ruta) { Principal(navController) }
+                        composable(Rutas.Principal.ruta) { Principal(navController, authViewModel) }
                         composable(Rutas.Configuracion.ruta) { Configuracion(navController) }
                         composable(Rutas.Ayuda.ruta) { Ayuda(navController) }
                         composable(Rutas.AcercaDe.ruta) { AcercaDe(navController) }
                         composable(Rutas.Pokedex.ruta) { Pokemon(viewModel, navController) }
+                        composable(Rutas.InicioSesion.ruta) { InicioSesion(navController, authViewModel) }
+                        composable(Rutas.Registro.ruta) { Registro(navController, authViewModel) }
                     }
                 }
             }
@@ -53,8 +60,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PreviewAcercade() {
     val navController = rememberNavController()
+
     NebulaTheme {
-        Principal(navController)
+       // Principal(navController, authViewModel = AuthViewModel(applicationContext))
     }
 }
 

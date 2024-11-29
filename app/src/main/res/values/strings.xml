@@ -36,5 +36,8 @@
     <string name="Error_Guardar">Error al guardar los datos</string>
     <string name="Exito_guardar">Datos guardados correctamente</string>
     <string name="pokedex" translatable="false">Pokedex</string>
+    <string name="login">Inicio de sesión</string>
+    <string name="signup">Registro</string>
+    <string name="cerrarSesion">Cerrar Sesión</string>
 
 </resources>

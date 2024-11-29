@@ -31,6 +31,7 @@ import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
@@ -52,7 +53,7 @@ fun Pokemon(viewModel: PokemonViewModel, navigationController: NavHostController
     }
 
     Column (
-        modifier = Modifier.padding(top = 25.dp)
+        modifier = Modifier.padding(top = 35.dp)
     ){
         Text(
             text = context.getString(R.string.pokedex),
@@ -61,11 +62,9 @@ fun Pokemon(viewModel: PokemonViewModel, navigationController: NavHostController
             modifier = Modifier.padding(16.dp).padding(top = 20.dp)
         )
         if (pokemons.isEmpty()) {
-            // Show loading indicator or placeholder
             Text(text = "Loading...")
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         } else {
-            // Display the list of pokemons
             PokemonList(pokemons)
         }
     }
@@ -74,7 +73,7 @@ fun Pokemon(viewModel: PokemonViewModel, navigationController: NavHostController
 @Composable
 fun PokemonList(pokemonList: List<DatosPokemon>) {
     LazyColumn {
-        itemsIndexed(items = pokemonList) { index, item ->
+        items(items = pokemonList) {item ->
             PokemonItem(pokemon = item)
         }
     }
@@ -125,12 +124,17 @@ fun PokemonItem(pokemon: DatosPokemon) {
                         Text(
                             text = pokemon.type.toString(),
                             style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis // pone puntos suspensivos si el texto es muy largo
                         )
                     }
 
             }
         }
     }
+
+
+
 
 
 

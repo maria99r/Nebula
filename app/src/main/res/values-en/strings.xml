@@ -24,4 +24,7 @@
     <string name="Desplegable">Select an option</string>
     <string name="Error_Guardar">Error saving data</string>
     <string name="Exito_guardar">Saving data correct</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
+    <string name="cerrarSesion">Sign out</string>
 </resources>
