@@ -21,8 +21,8 @@ import com.alanturing.nebula.view.Ayuda
 import com.alanturing.nebula.view.Configuracion
 import com.alanturing.nebula.view.Pokemon
 import com.alanturing.nebula.view.Principal
-import com.alanturing.nebula.view.InicioSesion
-import com.alanturing.nebula.view.Registro
+import com.alanturing.nebula.view.auth.InicioSesion
+import com.alanturing.nebula.view.auth.Registro
 import com.alanturing.nebula.viewModel.AuthViewModel
 import com.alanturing.nebula.viewModel.PokemonViewModel
 

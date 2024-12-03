@@ -30,4 +30,5 @@
     <string name="invita_registra">Don\'t have acount? Sign up</string>
     <string name="invita_inicia_sesion">Have acount? Log in</string>
     <string name="password">Password</string>
+    <string name="has_cerrado_sesion">You\'ve log out</string>
 </resources>

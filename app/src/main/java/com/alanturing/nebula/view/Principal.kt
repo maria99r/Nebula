@@ -1,5 +1,6 @@
 package com.alanturing.nebula.view
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +44,8 @@ import com.alanturing.nebula.dialogos.DialogAlertGeneric
 import com.alanturing.nebula.model.Rutas
 import com.alanturing.nebula.viewModel.AuthState
 import com.alanturing.nebula.viewModel.AuthViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlin.system.exitProcess
 
 // IMAGEN LOGO
@@ -59,14 +63,10 @@ fun Logo() {
 @Composable
 fun Principal(navigationController: NavHostController, authViewModel: AuthViewModel) {
 
+    val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
     val authState = authViewModel.authState.observeAsState()
 
-    LaunchedEffect(authState.value) {
-        if (authState.value is AuthState.Unauthenticated) {
-             navigationController.navigate(Rutas.InicioSesion.ruta)
-        }
-    }
 
     Surface(
         modifier = Modifier
@@ -88,7 +88,18 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                 color = MaterialTheme.colorScheme.primary,
             )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+
+            if (authState.value is AuthState.Authenticated) {
+                val user = Firebase.auth.currentUser
+                Text(
+                    text = user!!.email!!,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -131,22 +142,16 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    if (authState.value !is AuthState.Authenticated) {
-                        MenuCardButton(
-                            icon = R.drawable.login,
-                            text = stringResource(id = R.string.login),
-                            onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
-                        )
-                    }
-
                     MenuCardButton(
                         icon = R.drawable.salida,
                         text = stringResource(id = R.string.salir),
                         onClick = { showDialog = true }
                     )
+
                 }
             }
-            // boton cerrar sesion
+
+            // boton cerrar sesion / iniciar sesion
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -154,9 +159,26 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
             ) {
                 if (authState.value is AuthState.Authenticated) {
                     TextButton(
-                        onClick = { authViewModel.signout() }
+                        onClick = { authViewModel.signout()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.has_cerrado_sesion),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     ) {
-                        Text(text = stringResource(id = R.string.cerrarSesion))
+                        Text(
+                           stringResource(id = R.string.cerrarSesion )
+                        )
+                    }
+                } else{ // iniciar sesion
+                    TextButton(
+                        onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.login),
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }
@@ -207,13 +229,7 @@ fun MenuCardButton(
         border = BorderStroke(2.dp, Color.White),
 
         ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.linearGradient(colors = colorFondo)
-                )
-        ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -237,7 +253,7 @@ fun MenuCardButton(
             }
         }
     }
-}
+
 
 
 /*

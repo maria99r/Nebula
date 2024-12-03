@@ -41,7 +41,8 @@
     <string name="cerrarSesion">Cerrar Sesión</string>
     <string name="invita_registra">¿No tienes cuenta? Registrate</string>
     <string name="invita_inicia_sesion">¿Ya tienes cuenta? Inicia sesión</string>
-    <string name="password">contraseña</string>
+    <string name="password">Contraseña</string>
     <string name="email" translatable="false">Email</string>
+    <string name="has_cerrado_sesion">Has cerrado sesión</string>
 
 </resources>
