@@ -39,5 +39,9 @@
     <string name="login">Inicio de sesión</string>
     <string name="signup">Registro</string>
     <string name="cerrarSesion">Cerrar Sesión</string>
+    <string name="invita_registra">¿No tienes cuenta? Registrate</string>
+    <string name="invita_inicia_sesion">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="password">contraseña</string>
+    <string name="email" translatable="false">Email</string>
 
 </resources>

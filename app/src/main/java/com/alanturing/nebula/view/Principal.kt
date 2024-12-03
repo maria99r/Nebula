@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.alanturing.nebula.R
@@ -60,12 +62,11 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
     var showDialog by remember { mutableStateOf(false) }
     val authState = authViewModel.authState.observeAsState()
 
-    /* LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthState.Unauthenticated -> navigationController.navigate("InicioSesion")
-            else -> Unit
+    LaunchedEffect(authState.value) {
+        if (authState.value is AuthState.Unauthenticated) {
+             navigationController.navigate(Rutas.InicioSesion.ruta)
         }
-    }*/
+    }
 
     Surface(
         modifier = Modifier
@@ -73,7 +74,7 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
             .background(color = MaterialTheme.colorScheme.surface)
     ) {
         Column(
-           // verticalArrangement = Arrangement.Center,
+            // verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(16.dp)
         ) {
@@ -130,11 +131,14 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    MenuCardButton(
-                        icon = R.drawable.login,
-                        text = stringResource(id = R.string.login),
-                        onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
-                    )
+                    if (authState.value !is AuthState.Authenticated) {
+                        MenuCardButton(
+                            icon = R.drawable.login,
+                            text = stringResource(id = R.string.login),
+                            onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
+                        )
+                    }
+
                     MenuCardButton(
                         icon = R.drawable.salida,
                         text = stringResource(id = R.string.salir),
@@ -148,10 +152,12 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextButton(
-                    onClick = {authViewModel.signout()
-                }) {
-                    Text(text =  stringResource(id = R.string.cerrarSesion))
+                if (authState.value is AuthState.Authenticated) {
+                    TextButton(
+                        onClick = { authViewModel.signout() }
+                    ) {
+                        Text(text = stringResource(id = R.string.cerrarSesion))
+                    }
                 }
             }
         }
@@ -160,9 +166,9 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
     if (showDialog) {
         DialogAlertGeneric(
             onDismiss = { showDialog = false },
-            title = stringResource(id = R.string.salir) ,
-            text =   stringResource(id = R.string.confirmar_salida) ,
-            confirmText = stringResource(id = R.string.si) ,
+            title = stringResource(id = R.string.salir),
+            text = stringResource(id = R.string.confirmar_salida),
+            confirmText = stringResource(id = R.string.si),
             onConfirm = { exitProcess(0) },
             dismissText = stringResource(id = R.string.no)
         )
@@ -178,8 +184,10 @@ fun MenuCardButton(
     modifier: Modifier = Modifier
 ) {
     // degradado colores
-    val colorFondo = listOf(MaterialTheme.colorScheme.primary,
-        MaterialTheme.colorScheme.secondary)
+    val colorFondo = listOf(
+        MaterialTheme.colorScheme.primaryContainer,
+        MaterialTheme.colorScheme.tertiaryContainer
+    )
 
     Card(
         onClick = onClick,
@@ -194,30 +202,39 @@ fun MenuCardButton(
             ),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = Color.Transparent
         ),
         border = BorderStroke(2.dp, Color.White),
 
-    ) {
-        Column(
+        ) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .background(
+                    Brush.linearGradient(colors = colorFondo)
+                )
         ) {
-            Image(
-                painter = painterResource(icon),
-                contentDescription = null,
-                modifier = Modifier.size(50.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
