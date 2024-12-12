@@ -8,4 +8,5 @@ sealed class Rutas(val ruta: String) {
     data object Pokedex : Rutas("pokedex")
     data object InicioSesion : Rutas("inicioSesion")
     data object Registro : Rutas("registro")
+    data object Tareas : Rutas("tareas")
 }

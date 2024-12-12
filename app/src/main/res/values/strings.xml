@@ -44,5 +44,6 @@
     <string name="password">Contraseña</string>
     <string name="email" translatable="false">Email</string>
     <string name="has_cerrado_sesion">Has cerrado sesión</string>
+    <string name="tareas">Lista de tareas</string>
 
 </resources>
