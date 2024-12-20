@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,4 +17,7 @@ interface DaoMisTareas {
 
     @Delete
     suspend fun deleteAllMyData(allMyData: List<MiTarea>)
+
+    @Update
+    suspend fun updateChecked(miTarea: MiTarea)
 }

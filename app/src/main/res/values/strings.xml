@@ -44,10 +44,11 @@
     <string name="password">Contraseña</string>
     <string name="email" translatable="false">Email</string>
     <string name="has_cerrado_sesion">Has cerrado sesión</string>
-    <string name="tareas">Lista de tareas</string>
+    <string name="tareas">Prepara tu maleta</string>
     <string name="Inicio">Inicio</string>
     <string name="borrartodo">Borrar todo</string>
     <string name="añadir">Añadir</string>
     <string name="titulotareas">Organiza qué vas a llevar a Nebula</string>
+    <string name="mochila">Añade a tu mochila</string>
 
 </resources>

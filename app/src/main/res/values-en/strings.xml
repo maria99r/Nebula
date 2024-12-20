@@ -31,9 +31,10 @@
     <string name="invita_inicia_sesion">Have acount? Log in</string>
     <string name="password">Password</string>
     <string name="has_cerrado_sesion">You\'ve log out</string>
-    <string name="tareas">Tasks</string>
+    <string name="tareas">Prepare your bag</string>
     <string name="Inicio">Main page</string>
     <string name="añadir">Add</string>
     <string name="borrartodo">Delete all</string>
     <string name="titulotareas">" Organize what you are going to take to Nebula"</string>
+    <string name="mochila">Add to bag</string>
 </resources>

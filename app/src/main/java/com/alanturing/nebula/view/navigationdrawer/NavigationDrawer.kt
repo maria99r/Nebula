@@ -1,6 +1,5 @@
-package com.alanturing.nebula.view
+package com.alanturing.nebula.view.navigationdrawer
 
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -10,23 +9,18 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.alanturing.nebula.view.navigationdrawer.NavigationItems
 import kotlinx.coroutines.launch
 import com.alanturing.nebula.model.Rutas
-import com.alanturing.nebula.model.misTareas.BaseDatosMisTareas
-import com.alanturing.nebula.model.misTareas.RepositorioMisTareas
 import com.alanturing.nebula.view.auth.InicioSesion
 import com.alanturing.nebula.view.auth.Registro
 import com.alanturing.nebula.viewModel.AuthViewModel
 import com.alanturing.nebula.viewModel.PokemonViewModel
 import com.alanturing.nebula.viewModel.TareasViewModel
 
-import androidx.activity.viewModels
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,6 +51,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.alanturing.nebula.R
+import com.alanturing.nebula.view.AcercaDe
+import com.alanturing.nebula.view.Ayuda
+import com.alanturing.nebula.view.Configuracion
+import com.alanturing.nebula.view.Pokemon
+import com.alanturing.nebula.view.Principal
+import com.alanturing.nebula.view.Tareas
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,7 +85,7 @@ fun NavigationDrawer(
             route = Rutas.Tareas.ruta,
             selectedIcon = Icons.Filled.Edit,
             unselectedIcon = Icons.Outlined.Edit,
-            badgeCount = 105
+            badgeCount = tareasViewModel.getAll().collectAsState(initial = emptyList()).value.size
         ),
         NavigationItems(
             title = stringResource(id = R.string.configuracion),
@@ -104,7 +104,6 @@ fun NavigationDrawer(
             route = Rutas.Pokedex.ruta,
             selectedIcon = Icons.Filled.Face,
             unselectedIcon = Icons.Outlined.Face,
-            badgeCount = 105
         )
     )
 
@@ -115,10 +114,6 @@ fun NavigationDrawer(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-
-
-
 
 
     ModalNavigationDrawer(
@@ -135,14 +130,14 @@ fun NavigationDrawer(
                                 },
                         selected = index == selectedItemIndex,
                         onClick = {
+                            scope.launch {
+                                drawerState.close()
+                            }
                             navController.navigate(item.route) {
                                 popUpTo(navController.graph.startDestinationId) {
                                     saveState = true
-                                } /*launchSingleTop = true restoreState = true*/
+                                }
                             }
-                            /*selectedItemIndex = index scope.launch {
-                                drawerState.close()
-                            }*/
                         },
                         icon = {
                             Icon(

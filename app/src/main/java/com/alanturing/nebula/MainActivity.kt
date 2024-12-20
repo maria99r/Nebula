@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alanturing.nebula.model.misTareas.BaseDatosMisTareas
 import com.alanturing.nebula.model.misTareas.RepositorioMisTareas
 import com.alanturing.nebula.ui.theme.NebulaTheme
-import com.alanturing.nebula.view.NavigationDrawer
+import com.alanturing.nebula.view.navigationdrawer.NavigationDrawer
 import com.alanturing.nebula.viewModel.AuthViewModel
 import com.alanturing.nebula.viewModel.PokemonViewModel
 import com.alanturing.nebula.viewModel.TareasViewModel
@@ -24,8 +24,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
-
             NebulaTheme {
                 Surface {
                     val navController = rememberNavController()

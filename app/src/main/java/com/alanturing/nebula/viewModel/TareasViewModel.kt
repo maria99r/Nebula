@@ -12,13 +12,18 @@ class TareasViewModel(private val misTareasRepository: RepositorioMisTareas) : V
     fun getAll(): Flow<List<MiTarea>>
             = misTareasRepository.getAll()
 
-    fun insertarTarea(tarea: String) = viewModelScope.launch {
-        misTareasRepository.insertarTarea(MiTarea(name = tarea))
+    fun insertarTarea(tarea: String, b: Boolean) = viewModelScope.launch {
+        misTareasRepository.insertarTarea(MiTarea(name = tarea, isChecked = b))
     }
 
     fun borrarTodasTareas(todasTareas: List<MiTarea>) = viewModelScope.launch {
         misTareasRepository.borrarTodasTareas(todasTareas)
     }
+
+    fun updateChecked(tarea: MiTarea) = viewModelScope.launch {
+        misTareasRepository.updateChecked(tarea)
+    }
+
 
     class Factory(private val repository: RepositorioMisTareas) : ViewModelProvider.Factory {
         override fun <T : ViewModel>
