@@ -11,11 +11,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alanturing.nebula.ui.theme.NebulaTheme
 import com.alanturing.nebula.model.Rutas
+import com.alanturing.nebula.model.misTareas.BaseDatosMisTareas
+import com.alanturing.nebula.model.misTareas.RepositorioMisTareas
 import com.alanturing.nebula.view.AcercaDe
 import com.alanturing.nebula.view.Ayuda
 import com.alanturing.nebula.view.Configuracion
@@ -41,16 +44,28 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val authViewModel : AuthViewModel by viewModels()
                     val viewModel = PokemonViewModel()
-                    NavHost(navController = navController, startDestination = Rutas.Principal.ruta) {
+
+                    val database = BaseDatosMisTareas.getMyDatabase(applicationContext)
+                    val tareasRepository = RepositorioMisTareas(database.myDataDao())
+                    val tareasViewModel: TareasViewModel =
+                        viewModel(factory = TareasViewModel.Factory(tareasRepository))
+                    NavHost(
+                        navController = navController,
+                        startDestination = Rutas.Principal.ruta
+                    ) {
                         composable(Rutas.Principal.ruta) { Principal(navController, authViewModel) }
                         composable(Rutas.Configuracion.ruta) { Configuracion(navController) }
                         composable(Rutas.Ayuda.ruta) { Ayuda(navController) }
                         composable(Rutas.AcercaDe.ruta) { AcercaDe(navController) }
                         composable(Rutas.Pokedex.ruta) { Pokemon(viewModel, navController) }
-                        composable(Rutas.InicioSesion.ruta) { InicioSesion(navController, authViewModel) }
+                        composable(Rutas.InicioSesion.ruta) {
+                            InicioSesion(
+                                navController,
+                                authViewModel
+                            )
+                        }
                         composable(Rutas.Registro.ruta) { Registro(navController, authViewModel) }
-                        composable(Rutas.Tareas.ruta) { Tareas( navController, TareasViewModel) }
-
+                        composable(Rutas.Tareas.ruta) { Tareas(navController, tareasViewModel) }
                     }
                 }
             }

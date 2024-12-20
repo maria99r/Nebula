@@ -31,5 +31,5 @@
     <string name="invita_inicia_sesion">Have acount? Log in</string>
     <string name="password">Password</string>
     <string name="has_cerrado_sesion">You\'ve log out</string>
-    <string name="tareas">Task list</string>
+    <string name="tareas">Tasks</string>
 </resources>

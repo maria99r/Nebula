@@ -5,7 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,13 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -59,7 +56,6 @@ fun Logo() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Principal(navigationController: NavHostController, authViewModel: AuthViewModel) {
 
@@ -143,7 +139,7 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MenuCardButton(
-                        icon = R.drawable.tareas,
+                        icon = R.drawable.task,
                         text = stringResource(id = R.string.tareas),
                         onClick = { navigationController.navigate(Rutas.Tareas.ruta) }
                     )

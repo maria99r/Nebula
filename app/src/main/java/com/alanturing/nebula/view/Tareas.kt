@@ -27,14 +27,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alanturing.nebula.viewModel.TareasViewModel
 
+
 @Composable
 fun Tareas(
     navController: NavHostController,
-    viewModel: TareasViewModel = viewModel(factory = TareasViewModel.Factory) // ..1
+    viewModel: TareasViewModel
 ) {
-    val listaTareas by viewModel.getAll().collectAsState(initial = emptyList()) // ..2
-    var tareaImput by remember { mutableStateOf("") }
-
+    val listaTareas by viewModel.getAll().collectAsState(initial = emptyList())
+    var tareaImput by remember { mutableStateOf("")
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -81,4 +82,7 @@ fun Tareas(
         }
     }
 }
+
+
+
 

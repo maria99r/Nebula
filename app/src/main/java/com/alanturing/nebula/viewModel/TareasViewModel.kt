@@ -2,11 +2,7 @@ package com.alanturing.nebula.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.alanturing.nebula.AplicacionTareas
 import com.alanturing.nebula.model.misTareas.MiTarea
 import com.alanturing.nebula.model.misTareas.RepositorioMisTareas
 import kotlinx.coroutines.flow.Flow
@@ -24,12 +20,15 @@ class TareasViewModel(private val misTareasRepository: RepositorioMisTareas) : V
         misTareasRepository.borrarTodasTareas(todasTareas)
     }
 
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as AplicacionTareas)
-                TareasViewModel(application.container.repositorioMisTareas)
+    class Factory(private val repository: RepositorioMisTareas) : ViewModelProvider.Factory {
+        override fun <T : ViewModel>
+                create(modelClass: Class<T>):
+                T {
+            if (modelClass.isAssignableFrom(TareasViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return TareasViewModel(repository) as T
             }
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }
