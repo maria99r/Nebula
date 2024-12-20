@@ -3,7 +3,9 @@ package com.alanturing.nebula.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -11,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,8 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alanturing.nebula.viewModel.TareasViewModel
 
@@ -33,7 +36,7 @@ fun Tareas(
     navController: NavHostController,
     viewModel: TareasViewModel
 ) {
-    val listaTareas by viewModel.getAll().collectAsState(initial = emptyList())
+    val listaMochila by viewModel.getAll().collectAsState(initial = emptyList())
     var tareaImput by remember { mutableStateOf("")
     }
 
@@ -42,26 +45,37 @@ fun Tareas(
         verticalArrangement = Arrangement.Center,
         // horizontalAlignment = Layout.Alignment.CenterHorizontally
     ) {
+        Text(
+            text = "Organiza qué vas a llevar a tu camping",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
         // Lista tareas
         LazyColumn(
             modifier = Modifier.weight(.7F),
             verticalArrangement = Arrangement.Center
         ) {
-            items(listaTareas){ tarea ->
-                Card(
-                    modifier = Modifier
-                        .width(200.dp)
-                        .height(80.dp)
-                        .padding(vertical = 8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = tarea.name, style = MaterialTheme.typography.displaySmall)
-                    }
+            items(listaMochila){ tarea ->
+                var isChecked by remember { mutableStateOf(false) }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                { Checkbox(
+                    checked = isChecked,
+                    onCheckedChange = { isChecked = it }
+                )
+                    Text(
+                        text = tarea.name,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            textDecoration = if (isChecked) TextDecoration.LineThrough else null,
+                            color = if (isChecked)
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                            else MaterialTheme.colorScheme.onSurface ),
+                    modifier = Modifier.padding(start = 8.dp) )
                 }
-                Text(text = tarea.name, style = MaterialTheme.typography.displaySmall)
             }
 
         }
@@ -72,12 +86,19 @@ fun Tareas(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.weight(.3F)
         ) {
-            OutlinedTextField(value = tareaImput, onValueChange = { tareaImput = it })
-            Button(onClick = { viewModel.insertarTarea(tareaImput) }) {
-                Text(text = "SAVE")
+            OutlinedTextField(
+                value = tareaImput,
+                onValueChange = { tareaImput = it },
+            )
+            Button(
+                onClick = { viewModel.insertarTarea(tareaImput) }
+            ) {
+                Text(text = "Añadir")
             }
-            Button(onClick = { viewModel.borrarTodasTareas(listaTareas) }) {
-                Text(text = "ALL DELETE")
+            Button(
+                onClick = { viewModel.borrarTodasTareas(listaMochila) })
+            {
+                Text(text = "Borrar todo")
             }
         }
     }

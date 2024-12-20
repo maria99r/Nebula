@@ -139,7 +139,7 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MenuCardButton(
-                        icon = R.drawable.task,
+                        icon = R.drawable.tareas,
                         text = stringResource(id = R.string.tareas),
                         onClick = { navigationController.navigate(Rutas.Tareas.ruta) }
                     )
