@@ -12,4 +12,8 @@ class RepositorioMisTareas(private val daoMisTareas: DaoMisTareas) {
     suspend fun updateChecked(miTarea: MiTarea)
             = daoMisTareas.updateChecked(miTarea)
 
+    suspend fun borrarTarea(miTarea: MiTarea)
+            = daoMisTareas.deleteData(miTarea)
+
+    fun getSelected() = daoMisTareas.getSelected()
 }

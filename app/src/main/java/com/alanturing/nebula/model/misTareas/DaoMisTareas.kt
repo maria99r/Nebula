@@ -12,11 +12,17 @@ interface DaoMisTareas {
     @Query("SELECT * FROM sample")
     fun getAll(): Flow<List<MiTarea>>
 
+    @Query("SELECT * FROM sample WHERE isChecked is 0")
+    fun getSelected(): Flow<List<MiTarea>>
+
     @Insert
     suspend fun insertData(miTarea: MiTarea)
 
     @Delete
     suspend fun deleteAllMyData(allMyData: List<MiTarea>)
+
+    @Delete
+    suspend fun deleteData(miTarea: MiTarea)
 
     @Update
     suspend fun updateChecked(miTarea: MiTarea)

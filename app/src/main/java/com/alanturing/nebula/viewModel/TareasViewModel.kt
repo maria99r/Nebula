@@ -24,6 +24,13 @@ class TareasViewModel(private val misTareasRepository: RepositorioMisTareas) : V
         misTareasRepository.updateChecked(tarea)
     }
 
+    fun borrarTarea(tarea: MiTarea) = viewModelScope.launch {
+        misTareasRepository.borrarTarea(tarea)
+    }
+
+    fun getSelected(): Flow<List<MiTarea>>
+            = misTareasRepository.getSelected()
+
 
     class Factory(private val repository: RepositorioMisTareas) : ViewModelProvider.Factory {
         override fun <T : ViewModel>

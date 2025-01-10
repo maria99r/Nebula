@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Button
@@ -98,8 +100,21 @@ fun Tareas(
                                 textDecoration = if (isDone) TextDecoration.LineThrough else null,
                                 color = if (isDone)
                                     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                                else MaterialTheme.colorScheme.onSurface ),
-                            modifier = Modifier.padding(start = 8.dp) )
+                                else MaterialTheme.colorScheme.onSurface
+                            ),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+
+                        Button(
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error),
+                            onClick = { viewModel.borrarTarea(tarea) })
+                        {
+                            Text(
+                                text = Icons.Filled.Delete.toString())
+
+                        }
+
                     }
 
 

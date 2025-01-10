@@ -85,8 +85,8 @@ fun NavigationDrawer(
             route = Rutas.Tareas.ruta,
             selectedIcon = Icons.Filled.Edit,
             unselectedIcon = Icons.Outlined.Edit,
-            badgeCount = tareasViewModel.getAll().collectAsState(initial = emptyList()).value.size
-        ),
+            badgeCount = tareasViewModel.getSelected().collectAsState(initial = emptyList()).value.size)
+        ,
         NavigationItems(
             title = stringResource(id = R.string.configuracion),
             route = Rutas.Configuracion.ruta,
@@ -138,6 +138,7 @@ fun NavigationDrawer(
                                     saveState = true
                                 }
                             }
+                            // poner que se cierre solo al pulsar
                         },
                         icon = {
                             Icon(
