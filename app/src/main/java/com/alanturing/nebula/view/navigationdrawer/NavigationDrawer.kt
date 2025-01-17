@@ -67,6 +67,8 @@ fun NavigationDrawer(
     viewModel: PokemonViewModel,
     tareasViewModel: TareasViewModel
 ) {
+    val tareasNoSeleccionadas = tareasViewModel.getNoSelected().collectAsState(initial = emptyList()).value
+
     val items = listOf(
         NavigationItems(
             title = stringResource(id = R.string.Inicio),
@@ -85,7 +87,8 @@ fun NavigationDrawer(
             route = Rutas.Tareas.ruta,
             selectedIcon = Icons.Filled.Edit,
             unselectedIcon = Icons.Outlined.Edit,
-            badgeCount = tareasViewModel.getSelected().collectAsState(initial = emptyList()).value.size)
+            badgeCount = if (tareasNoSeleccionadas.isNotEmpty()) tareasNoSeleccionadas.size else null
+        )
         ,
         NavigationItems(
             title = stringResource(id = R.string.configuracion),
@@ -138,7 +141,7 @@ fun NavigationDrawer(
                                     saveState = true
                                 }
                             }
-                            // poner que se cierre solo al pulsar
+
                         },
                         icon = {
                             Icon(

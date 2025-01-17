@@ -28,7 +28,7 @@ class TareasViewModel(private val misTareasRepository: RepositorioMisTareas) : V
         misTareasRepository.borrarTarea(tarea)
     }
 
-    fun getSelected(): Flow<List<MiTarea>>
+    fun getNoSelected(): Flow<List<MiTarea>>
             = misTareasRepository.getSelected()
 
 

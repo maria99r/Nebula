@@ -50,5 +50,6 @@
     <string name="añadir">Añadir</string>
     <string name="titulotareas">Organiza qué vas a llevar a Nebula</string>
     <string name="mochila">Añade a tu mochila</string>
+    <string name="borrar" translatable="false">Eliminar</string>
 
 </resources>

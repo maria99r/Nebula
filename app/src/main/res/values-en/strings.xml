@@ -37,4 +37,5 @@
     <string name="borrartodo">Delete all</string>
     <string name="titulotareas">" Organize what you are going to take to Nebula"</string>
     <string name="mochila">Add to bag</string>
+    <string name="borrar">Delete</string>
 </resources>
