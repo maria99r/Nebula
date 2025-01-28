@@ -10,6 +10,7 @@ data class MiTarea(
     val id: Int = 0,
     @ColumnInfo(name = "name")
     val name: String,
+    @ColumnInfo(name = "isChecked")
     var isChecked: Boolean = false
 )
 
