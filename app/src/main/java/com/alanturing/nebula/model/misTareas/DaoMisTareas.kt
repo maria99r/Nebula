@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DaoMisTareas {
-    @Query("SELECT * FROM sample")
+    @Query("SELECT * FROM tareas")
     fun getAll(): Flow<List<MiTarea>>
 
-    @Query("SELECT * FROM sample WHERE isChecked is 0")
+    @Query("SELECT * FROM tareas WHERE isChecked is 0")
     fun getSelected(): Flow<List<MiTarea>>
 
     @Insert

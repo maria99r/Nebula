@@ -1,7 +1,5 @@
 package com.alanturing.nebula.model.authentication
 
-import androidx.room.Insert
-import com.google.firebase.auth.UserInfo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -10,7 +8,7 @@ import retrofit2.http.POST
 interface AuthClient {
 
     @POST("/api/login")
-    suspend fun login(@Body authRequest: AuthRequest) : LoginResponse
+    suspend fun login(@Body authRequest: AuthRequest) : Response<LoginResponse>
 
     @POST("/api/auth/refresh")
     suspend fun refreshToken(@Body token: TokenRequest) : LoginResponse

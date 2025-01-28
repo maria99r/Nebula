@@ -6,7 +6,7 @@ import retrofit2.Response
 class AuthRepository {
     private val authClient = AuthRetrofit.authclient
 
-    suspend fun login( authRequest: AuthRequest ): LoginResponse {
+    suspend fun login( authRequest: AuthRequest ): Response<LoginResponse> {
         return authClient.login(authRequest)
     }
 
