@@ -111,12 +111,12 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                         onClick = { navigationController.navigate(Rutas.Pokedex.ruta) }
                     )
                     MenuCardButton(
-                        icon = R.drawable.informacion,
-                        text = stringResource(id = R.string.ayuda_titulo),
-                        onClick = { navigationController.navigate(Rutas.Ayuda.ruta) }
+                        icon = R.drawable.tareas,
+                        text = stringResource(id = R.string.tareas),
+                        onClick = { navigationController.navigate(Rutas.Tareas.ruta) }
                     )
                 }
-
+/*
                 // Segunda fila
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -133,16 +133,13 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                         onClick = { navigationController.navigate(Rutas.Configuracion.ruta) }
                     )
                 }
+
+ */
                 // Tercera fila
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    MenuCardButton(
-                        icon = R.drawable.task,
-                        text = stringResource(id = R.string.tareas),
-                        onClick = { navigationController.navigate(Rutas.Tareas.ruta) }
-                    )
 
                     MenuCardButton(
                         icon = R.drawable.salida,

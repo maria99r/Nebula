@@ -18,7 +18,7 @@ abstract class BaseDatosMisTareas: RoomDatabase() {
                 Room.databaseBuilder(
                     context = context,
                     klass = BaseDatosMisTareas::class.java,
-                    name = "sample"
+                    name = "tareas",
                 )
                     .build()
                     .also { Instance = it }
