@@ -3,7 +3,9 @@ package com.alanturing.nebula.model.authentication
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AuthClient {
 
@@ -11,13 +13,15 @@ interface AuthClient {
     suspend fun login(@Body authRequest: AuthRequest) : Response<LoginResponse>
 
     @POST("/api/auth/refresh")
-    suspend fun refreshToken(@Body token: TokenRequest) : LoginResponse
+    suspend fun refreshToken(@Body tokenRequest: TokenRequest) : Response<TokenResponse>
 
     @POST("/api/register")
-    suspend fun register(@Body registerRequest: AuthRequest)
+    suspend fun register(@Body authRequest: AuthRequest) : Response<SignUpResponse>
 
-    /*la adquisición de los datos de un usuario específico (si el login solo devuelve tokens).*/
-    @GET("/api/getUser/")
-    suspend fun getByEmail(@Body token: TokenRequest) : SignUpResponse
+    @GET("/api/getUser/{email}")
+    suspend fun getByEmail(
+        @Path("email") email :String,
+        @Header("Authorization") bearerToken: String
+    ) : Response<SignUpResponse>
 
 }

@@ -17,4 +17,6 @@ object AuthRetrofit {
     val authclient: AuthClient by lazy {
         retrofit.create(AuthClient::class.java)
     }
+
+    // con datastore guardamos el token de acceso para q no tenga q iniciar sesion en cada pantalla.
 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DaoMisTareas {
+
     @Query("SELECT * FROM tareas")
     fun getAll(): Flow<List<MiTarea>>
 

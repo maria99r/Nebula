@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.map
 class ConfiguracionDataStore(private val context: Context) {
 
     companion object {
+
         private val Context.dataStore by preferencesDataStore(name = "configuracion")
+
+        private val TOKEN = stringPreferencesKey("token")  // token de acceso
 
         private val TIPO_TIENDA = intPreferencesKey("tipo_tienda") // radio button
         private val ACTIVIDAD = stringPreferencesKey("alquilar_actividades")  // desplegable
@@ -24,6 +27,22 @@ class ConfiguracionDataStore(private val context: Context) {
         private val CIUDAD4 = booleanPreferencesKey("ciudad4")
         private val CIUDAD5 = booleanPreferencesKey("ciudad5")
         private val CIUDAD6 = booleanPreferencesKey("ciudad6")
+    }
+
+
+    // obtener token
+    val getToken: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            val actividad = preferences[ACTIVIDAD]
+            Log.d("DataStore", "Actividad recuperada: $actividad")  // Para depurar
+            actividad
+        }
+
+    // guarda token
+    suspend fun saveToken(actividad: String) {
+        context.dataStore.edit { preferences ->
+            preferences[ACTIVIDAD] = actividad
+        }
     }
 
 

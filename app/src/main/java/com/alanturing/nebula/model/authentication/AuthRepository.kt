@@ -10,4 +10,8 @@ class AuthRepository {
         return authClient.login(authRequest)
     }
 
+    suspend fun getByEmail (email : String, accestoken : String) : SignUpResponse {
+
+    }
+
 }
