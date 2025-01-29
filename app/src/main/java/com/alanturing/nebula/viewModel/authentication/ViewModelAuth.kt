@@ -44,6 +44,7 @@ class ViewModelAuth : ViewModel() {
 
 }
 
+
 sealed class AuthState{
     object Authenticated : AuthState()
     object Unauthenticated : AuthState()
