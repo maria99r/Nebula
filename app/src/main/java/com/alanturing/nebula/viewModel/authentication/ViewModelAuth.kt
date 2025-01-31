@@ -16,6 +16,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.alanturing.nebula.model.authentication.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -44,21 +47,21 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
     private val _authState = MutableLiveData<AuthState>()
     val authState : LiveData<AuthState> = _authState
 
-    // variables de tipo mutableStateFlow y StateFlow en vez de tipo MutableLiveData y LiveData
-    private var _accessToken = MutableLiveData<String>()
-    var accessToken : LiveData<String> = _accessToken
+    // variables de tipo MutableStateFlow y StateFlow en vez de tipo MutableLiveData y LiveData
+    private var _accessToken = MutableStateFlow("")
+    var accessToken : StateFlow<String>  = _accessToken
 
-    private var _refresToken = MutableLiveData<String>()
-    var refreshToken : LiveData<String> = _refresToken
+    private var _refresToken = MutableStateFlow("")
+    var refreshToken : StateFlow<String> = _refresToken
 
-    private var _email = MutableLiveData<String>()
-    var email : LiveData<String> = _email
+    private var _email = MutableStateFlow("")
+    var email : StateFlow<String> = _email
 
-    private var _userId = MutableLiveData<Int>()
-    var userId : LiveData<Int> = _userId
+    private var _userId = MutableStateFlow(0)
+    var userId : StateFlow<Int> = _userId
 
-    private var _role = MutableLiveData<String>()
-    var role : LiveData<String> = _role
+    private var _role = MutableStateFlow("")
+    var role : StateFlow<String> = _role
 
 
     // para get y set es igual q en el otro,
@@ -74,15 +77,23 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
         _authState.value = AuthState.Loading
 
         viewModelScope.launch {
-            _accessToken.value = context.dataStorageAuth.data.map {
-                    preferences ->  preferences[TOKEN] ?: ""
-            }
+            _accessToken.value = context.dataStorageAuth.data.map { preferences ->
+                preferences[TOKEN] ?: "" }.first()
 
-            // cargo los 4 valores q guardo
+            _refresToken.value = context.dataStorageAuth.data.map { preferences ->
+                preferences[REFRESH_TOKEN] ?: "" }.first()
 
+            _email.value = context.dataStorageAuth.data.map { preferences ->
+                preferences[EMAIL] ?: "" }.first()
+
+            _userId.value = context.dataStorageAuth.data.map { preferences ->
+                preferences[USERID] ?: 0 }.first()
+
+            _role.value = context.dataStorageAuth.data.map { preferences ->
+                preferences[ROLE] ?: "" }.first()
         }
-    }
 
+    }
 
     // cuando me autentico, solo me devuelve el token,
     // por eso guardo el email para q me diga luego en que actividades esta autenticado
@@ -102,16 +113,13 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
     }
 
 
-
-
-
     fun login(email : String, password : String){
         viewModelScope.launch {
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
-                _authState.value = AuthState.Error("El email no es válido")
+                _authState.value = AuthState.Error("formato_inadecuado")
 
             if(email.isEmpty() || password.isEmpty()){
-                _authState.value = AuthState.Error("Email or password can't be empty")
+                _authState.value = AuthState.Error("formato_vacio")
             }
             _authState.value = AuthState.Loading
 
@@ -119,7 +127,6 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
 
             if (response.refreshToken.isEmpty() || response.accessToken.isEmpty() ){
                 _authState.value = AuthState.Error( "Something went wrong")
-                signOut()
             } else  {
                 _authState.value = AuthState.Authenticated
                 _refresToken.value = response.refreshToken
@@ -133,7 +140,7 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             if(email.isEmpty() || password.isEmpty()){
-                _authState.value = AuthState.Error("Email or password can't be empty")
+                _authState.value = AuthState.Error("formato_vacio")
             }
 
             _authState.value = AuthState.Loading
@@ -142,13 +149,11 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
 
             if(result.email.isEmpty() || result.userId == 0  || result.role.isEmpty() ){
                 _authState.value = AuthState.Error("Something went wrong")
-                signOut()
             } else {
                 _authState.value = AuthState.Authenticated
                 login(email, password)
             }
         }
-
     }
 
     fun refreshAndSaveToken(){
@@ -159,8 +164,7 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
             val response = repository.refreshToken(_refresToken.value.toString())
 
             if (response.token.isEmpty() ){
-                _authState.value = AuthState.Error( "Something went wrong")
-                signOut()
+                _authState.value = AuthState.Error( "formato_vacio")
             } else  {
                 _authState.value = AuthState.Authenticated
                 _accessToken.value = response.token
@@ -169,27 +173,30 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    suspend fun signOut(){
-        _authState.value = AuthState.Unauthenticated
-        context.dataStorageAuth.edit {
-                preferences ->
-            // borro los valores
-            preferences[EMAIL] = ""
-            preferences[TOKEN] = ""
-            preferences[REFRESH_TOKEN] = ""
-            preferences[USERID] = 0
+    fun signOut(){
+        viewModelScope.launch {
+            _authState.value = AuthState.Unauthenticated
+            context.dataStorageAuth.edit {
+                    preferences ->
+                // borro los valores
+                preferences[EMAIL] = ""
+                preferences[TOKEN] = ""
+                preferences[REFRESH_TOKEN] = ""
+                preferences[USERID] = 0
+            }
         }
+
     }
 
     suspend fun saveCredentials(){
         context.dataStorageAuth.edit {
                 preferences ->
             // guardo los valores
-            preferences[EMAIL] = _email.value!!
-            preferences[TOKEN] = _accessToken.value!!
-            preferences[REFRESH_TOKEN] = _refresToken.value!!
-            preferences[USERID] = _userId.value!!
-            preferences[ROLE] = _role.value!!
+            preferences[EMAIL] = _email.value
+            preferences[TOKEN] = _accessToken.value
+            preferences[REFRESH_TOKEN] = _refresToken.value
+            preferences[USERID] = _userId.value
+            preferences[ROLE] = _role.value
 
             Log.d("DataStore", "Token recuperado: $preferences[TOKEN]")
             Log.d("DataStore", "Token refresco: $preferences[REFRESH_TOKEN]")

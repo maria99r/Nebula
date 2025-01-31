@@ -41,12 +41,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.alanturing.nebula.R
 import com.alanturing.nebula.model.Rutas
-import com.alanturing.nebula.viewModel.AuthState
+import com.alanturing.nebula.viewModel.authentication.AuthState
+import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registro(navController: NavController, authViewModel: AuthViewModel) {
+fun Registro(navController: NavController, viewModelAuth: ViewModelAuth) {
 
     var email by remember {
         mutableStateOf("")
@@ -58,7 +59,7 @@ fun Registro(navController: NavController, authViewModel: AuthViewModel) {
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
-    val authState = authViewModel.authState.observeAsState()
+    val authState = viewModelAuth.authState.observeAsState()
     val context = LocalContext.current
 
     LaunchedEffect(authState.value) {
@@ -136,7 +137,7 @@ fun Registro(navController: NavController, authViewModel: AuthViewModel) {
 
         Button(
             onClick = {
-                authViewModel.signup(email, password)
+                viewModelAuth.register(email, password)
             },
             enabled = authState.value != AuthState.Loading,
             colors = ButtonColors(

@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,8 +43,8 @@ import androidx.navigation.NavHostController
 import com.alanturing.nebula.R
 import com.alanturing.nebula.dialogos.DialogAlertGeneric
 import com.alanturing.nebula.model.Rutas
-import com.alanturing.nebula.viewModel.AuthState
-import com.alanturing.nebula.viewModel.AuthViewModel
+import com.alanturing.nebula.viewModel.authentication.AuthState
+import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlin.system.exitProcess
@@ -61,19 +62,19 @@ fun Logo() {
 
 // cambiar view model
 @Composable
-fun Principal(navigationController: NavHostController, authViewModel: AuthViewModel) {
+fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelAuth) {
 
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
 
     val authState = viewModelAuth.authState.observeAsState()
-    val email = viewModelAuth.email.observeAsState()
+    val email = viewModelAuth.email.collectAsState()
 
-    val refrestToken by viewModelAuth.refreshToken.collectAsState()
+    val refreshToken by viewModelAuth.refreshToken.collectAsState()
 
 
     LaunchedEffect(key1 = refreshToken) {
-        if (!refreshToken.isEmpty() ) vieeModelAuth.refreshTokenAndSve()
+        if (refreshToken.isNotEmpty()) viewModelAuth.refreshAndSaveToken()
         else Log.i("ViewModelAuth", "LaunchEffect - principal . refresh token vacio")
      }
 
@@ -100,23 +101,6 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
             Spacer(modifier = Modifier.height(20.dp))
 
 
-            when(authState.value) {
-                is AuthState.Unauthenticated -> {
-                    // boton de auntentificacion
-                }
-
-                is AuthState.Authenticated -> {
-                    val user = Firebase.auth.currentUser
-                    Text(
-                        text = user!!.email!!,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-                is AuthState.Error -> {
-                    // funcion para mostrar un toast
-                }
-            }
 
 
 
@@ -182,30 +166,51 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (authState.value is AuthState.Authenticated) {
-                    TextButton(
-                        onClick = { authViewModel.signout()
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.has_cerrado_sesion),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                when(authState.value) {
+                    is AuthState.Unauthenticated -> {
+                        // boton de inicio de seseion
+                        TextButton(
+                            onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.login),
+                                color = MaterialTheme.colorScheme.primary
+                            )
                         }
-                    ) {
-                        Text(
-                           stringResource(id = R.string.cerrarSesion )
-                        )
                     }
-                } else{ // iniciar sesion
-                    TextButton(
-                        onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
-                    ) {
+
+                    is AuthState.Authenticated -> {
+                        val user = Firebase.auth.currentUser
                         Text(
-                            text = stringResource(id = R.string.login),
-                            color = MaterialTheme.colorScheme.primary
+                            text = user!!.email!!,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary,
                         )
+                        TextButton(
+                            onClick = { viewModelAuth.signOut()
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.has_cerrado_sesion),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        ) {
+                            Text(
+                                stringResource(id = R.string.cerrarSesion )
+                            )
+                        }
+                    }
+                    is AuthState.Error -> {
+                        // funcion para mostrar un toast
+
+
+                    }
+                    else -> {
+
+
                     }
                 }
+
             }
         }
     }

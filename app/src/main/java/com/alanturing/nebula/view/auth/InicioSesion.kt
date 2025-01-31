@@ -36,15 +36,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lint.kotlin.metadata.Visibility
 import androidx.navigation.NavHostController
 import com.alanturing.nebula.R
 import com.alanturing.nebula.model.Rutas
-import com.alanturing.nebula.viewModel.AuthState
-import com.alanturing.nebula.viewModel.AuthViewModel
+import com.alanturing.nebula.viewModel.authentication.AuthState
+import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 
 @Composable
-fun InicioSesion(navController: NavHostController, authViewModel: AuthViewModel) {
+fun InicioSesion(navController: NavHostController, viewModelAuth: ViewModelAuth) {
 
     // Login
     // imagen
@@ -62,7 +61,7 @@ fun InicioSesion(navController: NavHostController, authViewModel: AuthViewModel)
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
-    val authState = authViewModel.authState.observeAsState()
+    val authState = viewModelAuth.authState.observeAsState()
     val context = LocalContext.current
 
     LaunchedEffect(authState.value) {
@@ -135,7 +134,7 @@ fun InicioSesion(navController: NavHostController, authViewModel: AuthViewModel)
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            authViewModel.login(email,password)
+            viewModelAuth.login(email,password)
         },
             enabled = authState.value != AuthState.Loading,
             colors = ButtonColors(
