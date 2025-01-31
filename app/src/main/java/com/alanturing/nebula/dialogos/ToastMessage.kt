@@ -13,10 +13,10 @@ fun getStringResourceId(key : String) : Int {
 
 
     }
+    /*
     Toast.makeText(
             context,
     context.getString(R.string.Error_Guardar),
     Toast.LENGTH_LONG
-    ).show()
-    navController.navigate(Rutas.Principal.ruta)
+    ).show()*/
 }
