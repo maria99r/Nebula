@@ -9,16 +9,16 @@ import retrofit2.http.Path
 
 interface AuthClient {
 
-    @POST("/api/login")
+    @POST("/api/auth")
     suspend fun login(@Body authRequest: AuthRequest) : Response<LoginResponse>
 
     @POST("/api/auth/refresh")
     suspend fun refreshToken(@Body tokenRequest: TokenRequest) : Response<TokenResponse>
 
-    @POST("/api/register")
+    @POST("/api/user")
     suspend fun register(@Body authRequest: AuthRequest) : Response<SignUpResponse>
 
-    @GET("/api/getUser/{email}")
+    @GET("/api/email/{email}")
     suspend fun getByEmail(
         @Path("email") email :String,
         @Header("Authorization") bearerToken: String

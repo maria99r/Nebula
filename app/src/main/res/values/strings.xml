@@ -50,6 +50,8 @@
     <string name="añadir">Añadir</string>
     <string name="titulotareas">Organiza qué vas a llevar a Nebula</string>
     <string name="mochila">Añade a tu mochila</string>
-    <string name="borrar" translatable="false">Eliminar</string>
+    <string name="borrar">Eliminar</string>
+    <string name="error_inicio_sesion">El email o la contraseña ingresada no es válida</string>
+    <string name="error_vacio">El email y la contraseña no pueden estar vacios.</string>
 
 </resources>

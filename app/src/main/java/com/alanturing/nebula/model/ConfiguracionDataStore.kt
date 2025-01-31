@@ -15,7 +15,7 @@ class ConfiguracionDataStore(private val context: Context) {
 
     companion object {
 
-        private val Context.dataStore by preferencesDataStore(name = "configuracion")
+        val Context.dataStore by preferencesDataStore(name = "configuracion")
 
         private val TIPO_TIENDA = intPreferencesKey("tipo_tienda") // radio button
         private val ACTIVIDAD = stringPreferencesKey("alquilar_actividades")  // desplegable
@@ -26,60 +26,7 @@ class ConfiguracionDataStore(private val context: Context) {
         private val CIUDAD5 = booleanPreferencesKey("ciudad5")
         private val CIUDAD6 = booleanPreferencesKey("ciudad6")
 
-        private val TOKEN = stringPreferencesKey("token")  // TOKEN DE ACCESO DEL USUARIO
-        private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")  // TOKEN DE ACCESO DEL USUARIO
-
-        private val EMAIL = stringPreferencesKey("emal")  // TOKEN DE ACCESO DEL USUARIO
-
     }
-
-
-    // obtener token
-    val getToken: Flow<String?> = context.dataStore.data
-        .map { preferences ->
-            val token = preferences[TOKEN]
-            Log.d("DataStore", "Token recuperadp: $token")
-            token
-        }
-
-    // guarda token
-    suspend fun saveToken(token: String) {
-        context.dataStore.edit { preferences ->
-            preferences[TOKEN] = token
-        }
-    }
-
-    // obtener email
-    val getEmail: Flow<String?> = context.dataStore.data
-        .map { preferences ->
-            val email = preferences[EMAIL]
-            Log.d("DataStore", "Email recuperado: $email")
-            email
-        }
-
-    // guarda email
-    suspend fun saveEmail(token: String) {
-        context.dataStore.edit { preferences ->
-            preferences[EMAIL] = token
-        }
-    }
-
-
-    // obtener token de refresco
-    val getRefreshToken: Flow<String?> = context.dataStore.data
-        .map { preferences ->
-            val token = preferences[REFRESH_TOKEN]
-            Log.d("DataStore", "Token de refresco recuperado: $token")
-            token
-        }
-
-    // guarda token de refresco
-    suspend fun saveRefreshToken(token: String) {
-        context.dataStore.edit { preferences ->
-            preferences[REFRESH_TOKEN] = token
-        }
-    }
-
 
     // checkbox ciudad1
     val getCiudad1: Flow<Boolean> = context.dataStore.data

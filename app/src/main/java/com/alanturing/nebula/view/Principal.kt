@@ -1,5 +1,6 @@
 package com.alanturing.nebula.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -21,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alanturing.nebula.R
 import com.alanturing.nebula.dialogos.DialogAlertGeneric
@@ -56,13 +59,23 @@ fun Logo() {
     )
 }
 
+// cambiar view model
 @Composable
 fun Principal(navigationController: NavHostController, authViewModel: AuthViewModel) {
 
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
-    val authState = authViewModel.authState.observeAsState()
 
+    val authState = viewModelAuth.authState.observeAsState()
+    val email = viewModelAuth.email.observeAsState()
+
+    val refrestToken by viewModelAuth.refreshToken.collectAsState()
+
+
+    LaunchedEffect(key1 = refreshToken) {
+        if (!refreshToken.isEmpty() ) vieeModelAuth.refreshTokenAndSve()
+        else Log.i("ViewModelAuth", "LaunchEffect - principal . refresh token vacio")
+     }
 
     Surface(
         modifier = Modifier
@@ -86,14 +99,27 @@ fun Principal(navigationController: NavHostController, authViewModel: AuthViewMo
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            if (authState.value is AuthState.Authenticated) {
-                val user = Firebase.auth.currentUser
-                Text(
-                    text = user!!.email!!,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                )
+
+            when(authState.value) {
+                is AuthState.Unauthenticated -> {
+                    // boton de auntentificacion
+                }
+
+                is AuthState.Authenticated -> {
+                    val user = Firebase.auth.currentUser
+                    Text(
+                        text = user!!.email!!,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                is AuthState.Error -> {
+                    // funcion para mostrar un toast
+                }
             }
+
+
+
 
             Spacer(modifier = Modifier.height(30.dp))
 
