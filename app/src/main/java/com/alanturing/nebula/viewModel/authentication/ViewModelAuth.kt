@@ -92,6 +92,11 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
             _role.value = context.dataStorageAuth.data.map { preferences ->
                 preferences[ROLE] ?: "" }.first()
         }
+        if (_email.value.isEmpty()){
+            Log.i("carga credenciales" , "email esta vacio")
+            _authState.value = AuthState.Unauthenticated
+        } else _authState.value = AuthState.Authenticated
+
 
     }
 
@@ -99,12 +104,14 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
     // por eso guardo el email para q me diga luego en que actividades esta autenticado
     fun getUserDataAndSave(email : String){
         viewModelScope.launch{
-            val result = repository.getByEmail(email, _accessToken.value.toString())
+            val result = repository.getByEmail(email, _accessToken.value)
 
-            if(result.userId == 0 || result.role .isEmpty() || result.email.isEmpty()){
+            Log.i("getUser" , result.toString())
+
+            if(result.id == 0  || result.email.isEmpty()){
                 _authState.value = AuthState.Error("No existe usuario o no hay datos de este")
             } else {
-                _userId.value = result.userId
+                _userId.value = result.id
                 _email.value = result.email
                 _role.value = result.role
                 saveCredentials()
@@ -115,43 +122,60 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
 
     fun login(email : String, password : String){
         viewModelScope.launch {
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 _authState.value = AuthState.Error("formato_inadecuado")
-
-            if(email.isEmpty() || password.isEmpty()){
+            }
+            else if(email.isEmpty() || password.isEmpty()){
                 _authState.value = AuthState.Error("formato_vacio")
             }
-            _authState.value = AuthState.Loading
+            else if( password.length < 6){
+                _authState.value = AuthState.Error("contraseña_corta")
+            }else {
 
-            val response = repository.login(email, password)
+                _authState.value = AuthState.Loading
 
-            if (response.refreshToken.isEmpty() || response.accessToken.isEmpty() ){
-                _authState.value = AuthState.Error( "Something went wrong")
-            } else  {
-                _authState.value = AuthState.Authenticated
-                _refresToken.value = response.refreshToken
-                _accessToken.value = response.accessToken
-                getUserDataAndSave(email)
+                val response = repository.login(email, password)
+
+                Log.i("TOKENES" ,response.toString())
+
+                if (response.refreshToken.isEmpty() || response.accessToken.isEmpty() ){
+                    _authState.value = AuthState.Error("usuario_no_existe")
+
+                } else  {
+                    _authState.value = AuthState.Authenticated
+                    _refresToken.value = response.refreshToken
+                    _accessToken.value = response.accessToken
+                    getUserDataAndSave(email)
+                }
             }
         }
     }
 
     fun register(email : String, password : String){
 
+        Log.i("registro" , "ha entrado")
         viewModelScope.launch {
-            if(email.isEmpty() || password.isEmpty()){
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                _authState.value = AuthState.Error("formato_inadecuado")
+
+            } else if(email.isEmpty() || password.isEmpty()){
                 _authState.value = AuthState.Error("formato_vacio")
-            }
-
-            _authState.value = AuthState.Loading
-
-            val result = repository.register(email, password)
-
-            if(result.email.isEmpty() || result.userId == 0  || result.role.isEmpty() ){
-                _authState.value = AuthState.Error("Something went wrong")
+            } else if(password.length < 6){
+                _authState.value = AuthState.Error("contraseña_corta")
             } else {
-                _authState.value = AuthState.Authenticated
-                login(email, password)
+                _authState.value = AuthState.Loading
+
+                val result = repository.register(email, password)
+
+                Log.i("usuario creado" , result.toString())
+
+                if(result.email.isEmpty() || result.id == 0  || result.role.isEmpty() ){
+                    _authState.value = AuthState.Error("error_generico")
+                }
+                else {
+                    Log.i("se guarda" , result.toString())
+                    login(email, password)
+                }
             }
         }
     }
@@ -169,7 +193,6 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
                 _authState.value = AuthState.Authenticated
                 _accessToken.value = response.token
             }
-
         }
     }
 
@@ -185,7 +208,6 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
                 preferences[USERID] = 0
             }
         }
-
     }
 
     suspend fun saveCredentials(){

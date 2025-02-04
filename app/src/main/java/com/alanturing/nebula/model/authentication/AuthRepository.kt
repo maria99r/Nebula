@@ -32,7 +32,7 @@ class AuthRepository {
         return withContext(Dispatchers.IO) {
             val registerData = authClient.register(AuthRequest(email , password))
             SignUpResponse(
-                registerData.body()?.userId ?: 0,
+                registerData.body()?.id ?: 0,
                 registerData.body()?.email ?: "",
                 registerData.body()?.role ?: "",
             )
@@ -43,7 +43,7 @@ class AuthRepository {
         return withContext(Dispatchers.IO) {
             val data = authClient.getByEmail(email, "Bearer $accestoken")
             SignUpResponse(
-                data.body()?.userId ?: 0,
+                data.body()?.id ?: 0,
                 data.body()?.email ?: "",
                 data.body()?.role ?: "",
             )

@@ -57,13 +57,14 @@ import com.alanturing.nebula.view.Configuracion
 import com.alanturing.nebula.view.Pokemon
 import com.alanturing.nebula.view.Principal
 import com.alanturing.nebula.view.Tareas
+import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
     navController: NavHostController,
-    authViewModel: AuthViewModel,
+    viewModelAuth: ViewModelAuth,
     viewModel: PokemonViewModel,
     tareasViewModel: TareasViewModel
 ) {
@@ -179,7 +180,7 @@ fun NavigationDrawer(
                 )
                 {
                     composable(Rutas.Principal.ruta) {
-                        Principal(navController, authViewModel)
+                        Principal(navController, viewModelAuth)
                     }
                     composable (Rutas.Configuracion.ruta) {
                         Configuracion(navController)
@@ -194,10 +195,10 @@ fun NavigationDrawer(
                         Pokemon(viewModel, navController)
                     }
                     composable(Rutas.InicioSesion.ruta) {
-                        InicioSesion(navController, authViewModel)
+                        InicioSesion(navController, viewModelAuth)
                     }
                     composable(Rutas.Registro.ruta) {
-                        Registro(navController, authViewModel)
+                        Registro(navController, viewModelAuth)
                     }
                     composable(Rutas.Tareas.ruta) {
                         Tareas(navController, tareasViewModel)

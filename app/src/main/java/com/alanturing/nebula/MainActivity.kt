@@ -18,6 +18,7 @@ import com.alanturing.nebula.view.navigationdrawer.NavigationDrawer
 import com.alanturing.nebula.viewModel.AuthViewModel
 import com.alanturing.nebula.viewModel.PokemonViewModel
 import com.alanturing.nebula.viewModel.TareasViewModel
+import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +28,12 @@ class MainActivity : ComponentActivity() {
             NebulaTheme {
                 Surface {
                     val navController = rememberNavController()
-                    val authViewModel : AuthViewModel by viewModels()
+                    val viewModelAuth : ViewModelAuth by viewModels()
                     val viewModel = PokemonViewModel()
                     val database = BaseDatosMisTareas.getMyDatabase(applicationContext)
                     val tareasRepository = RepositorioMisTareas(database.myDataDao())
                     val tareasViewModel: TareasViewModel = viewModel(factory = TareasViewModel.Factory(tareasRepository))
-                    NavigationDrawer(navController, authViewModel, viewModel, tareasViewModel)
+                    NavigationDrawer(navController, viewModelAuth, viewModel, tareasViewModel)
                 }
             }
         }

@@ -39,7 +39,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import com.alanturing.nebula.R
+import com.alanturing.nebula.dialogos.getStringResourceId
 import com.alanturing.nebula.model.Rutas
 import com.alanturing.nebula.viewModel.authentication.AuthState
 import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
@@ -138,6 +140,13 @@ fun Registro(navController: NavController, viewModelAuth: ViewModelAuth) {
         Button(
             onClick = {
                 viewModelAuth.register(email, password)
+                if (authState.value is AuthState.Error) {
+                    Toast.makeText(
+                        context,
+                        getString(context, getStringResourceId((authState.value as AuthState.Error).message)),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             },
             enabled = authState.value != AuthState.Loading,
             colors = ButtonColors(
@@ -161,6 +170,7 @@ fun Registro(navController: NavController, viewModelAuth: ViewModelAuth) {
                 color = MaterialTheme.colorScheme.primary
             )
         }
+
     }
 }
 

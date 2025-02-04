@@ -18,7 +18,7 @@ interface AuthClient {
     @POST("/api/user")
     suspend fun register(@Body authRequest: AuthRequest) : Response<SignUpResponse>
 
-    @GET("/api/email/{email}")
+    @GET("/api/user/email/{email}")
     suspend fun getByEmail(
         @Path("email") email :String,
         @Header("Authorization") bearerToken: String

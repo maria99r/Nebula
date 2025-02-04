@@ -38,11 +38,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.alanturing.nebula.R
 import com.alanturing.nebula.dialogos.DialogAlertGeneric
+import com.alanturing.nebula.dialogos.getStringResourceId
+
 import com.alanturing.nebula.model.Rutas
+import com.alanturing.nebula.viewModel.AuthViewModel
 import com.alanturing.nebula.viewModel.authentication.AuthState
 import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 import com.google.firebase.Firebase
@@ -72,11 +76,11 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
 
     val refreshToken by viewModelAuth.refreshToken.collectAsState()
 
-
     LaunchedEffect(key1 = refreshToken) {
+        Log.i("estado" , authState.value.toString())
         if (refreshToken.isNotEmpty()) viewModelAuth.refreshAndSaveToken()
         else Log.i("ViewModelAuth", "LaunchEffect - principal . refresh token vacio")
-     }
+    }
 
     Surface(
         modifier = Modifier
@@ -99,12 +103,6 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-
-
-
-
-
-
             Spacer(modifier = Modifier.height(30.dp))
 
             Column(
@@ -166,11 +164,14 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 when(authState.value) {
                     is AuthState.Unauthenticated -> {
                         // boton de inicio de seseion
                         TextButton(
-                            onClick = { navigationController.navigate(Rutas.InicioSesion.ruta) }
+                            onClick = {
+                                navigationController.navigate(Rutas.InicioSesion.ruta)
+                            }
                         ) {
                             Text(
                                 text = stringResource(id = R.string.login),
@@ -180,9 +181,8 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
                     }
 
                     is AuthState.Authenticated -> {
-                        val user = Firebase.auth.currentUser
                         Text(
-                            text = user!!.email!!,
+                            text = email.value,
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.primary,
                         )
@@ -202,7 +202,13 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
                     }
                     is AuthState.Error -> {
                         // funcion para mostrar un toast
+                        Toast.makeText(
+                            context,
+                            getString(context, getStringResourceId((authState.value as AuthState.Error).message)),
+                            Toast.LENGTH_SHORT
+                        ).show()
 
+                        viewModelAuth.signOut()
 
                     }
                     else -> {
