@@ -52,11 +52,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.alanturing.nebula.R
 import com.alanturing.nebula.view.AcercaDe
+import com.alanturing.nebula.view.Actividades
 import com.alanturing.nebula.view.Ayuda
 import com.alanturing.nebula.view.Configuracion
 import com.alanturing.nebula.view.Pokemon
 import com.alanturing.nebula.view.Principal
 import com.alanturing.nebula.view.Tareas
+import com.alanturing.nebula.viewModel.authentication.ViewModelActivities
 import com.alanturing.nebula.viewModel.authentication.ViewModelAuth
 
 
@@ -66,7 +68,8 @@ fun NavigationDrawer(
     navController: NavHostController,
     viewModelAuth: ViewModelAuth,
     viewModel: PokemonViewModel,
-    tareasViewModel: TareasViewModel
+    tareasViewModel: TareasViewModel,
+    viewModelActivities: ViewModelActivities,
 ) {
     val tareasNoSeleccionadas = tareasViewModel.getNoSelected().collectAsState(initial = emptyList()).value
 
@@ -96,6 +99,12 @@ fun NavigationDrawer(
             route = Rutas.Configuracion.ruta,
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings
+        ),
+        NavigationItems(
+            title = stringResource(id = R.string.activity),
+            route = Rutas.Actividades.ruta,
+            selectedIcon = Icons.Filled.DateRange,
+            unselectedIcon = Icons.Outlined.DateRange
         ),
         NavigationItems(
             title =  stringResource(id = R.string.ayuda_titulo),
@@ -202,6 +211,9 @@ fun NavigationDrawer(
                     }
                     composable(Rutas.Tareas.ruta) {
                         Tareas(navController, tareasViewModel)
+                    }
+                    composable(Rutas.Actividades.ruta) {
+                        Actividades(navController, viewModelActivities)
                     }
                 }
             }

@@ -57,5 +57,6 @@
     <string name="error_contra">La contraseña debe tener 6 caracteres</string>
     <string name="error_crear_usuario">Error al crear el usuario</string>
     <string name="error_usuario_no_existe">No existe usuario con este email</string>
+    <string name="activity">Actividades</string>
 
 </resources>

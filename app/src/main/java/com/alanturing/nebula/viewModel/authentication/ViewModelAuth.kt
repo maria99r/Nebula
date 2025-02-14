@@ -33,16 +33,15 @@ class ViewModelAuth(application: Application) : AndroidViewModel(application) {
     companion object{
         val Context.dataStorageAuth : DataStore<Preferences> by preferencesDataStore(name = "dataStorageAuth")
 
-        private val TOKEN = stringPreferencesKey("token")  // TOKEN DE ACCESO DEL USUARIO
-        private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")  // TOKEN DE REFRESCO DEL USUARIO
-        private val EMAIL = stringPreferencesKey("email")  // EMAIL DEL USUARIO
-        private val USERID = intPreferencesKey("userId")  // ID DEL USUARIO
-        private val ROLE = stringPreferencesKey("role")  // ROL DEL USUARIO
+        val TOKEN = stringPreferencesKey("token")  // TOKEN DE ACCESO DEL USUARIO
+        val REFRESH_TOKEN = stringPreferencesKey("refresh_token")  // TOKEN DE REFRESCO DEL USUARIO
+        val EMAIL = stringPreferencesKey("email")  // EMAIL DEL USUARIO
+        val USERID = intPreferencesKey("userId")  // ID DEL USUARIO
+        val ROLE = stringPreferencesKey("role")  // ROL DEL USUARIO
     }
 
     // esta instancia se guarda con singletone
     /*val dataStorageAuth = ConfiguracionDataStore(context)*/
-
 
     private val _authState = MutableLiveData<AuthState>()
     val authState : LiveData<AuthState> = _authState

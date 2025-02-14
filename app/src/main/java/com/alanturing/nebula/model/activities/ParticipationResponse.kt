@@ -6,5 +6,5 @@ data class  ParticipationResponse (
     val id: Int,
     val userId: Int,
     val activityId: Int,
-    val activity: Optional<ActivityResponse>
+    val activity: ActivityResponse
 )

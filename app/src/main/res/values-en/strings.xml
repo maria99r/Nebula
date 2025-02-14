@@ -44,4 +44,5 @@
     <string name="error_contra">Password must have 6 characteres</string>
     <string name="error_crear_usuario">User can not be created</string>
     <string name="error_usuario_no_existe">No user has this email</string>
+    <string name="activity">Activities</string>
 </resources>

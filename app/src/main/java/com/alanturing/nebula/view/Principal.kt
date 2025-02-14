@@ -113,10 +113,16 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
+                    /*
                     MenuCardButton(
                         icon = R.drawable.pokedex,
                         text = stringResource(id = R.string.pokedex),
                         onClick = { navigationController.navigate(Rutas.Pokedex.ruta) }
+                    )*/
+                    MenuCardButton(
+                        icon = R.drawable.sobrenosotros,
+                        text = stringResource(id = R.string.activity),
+                        onClick = { navigationController.navigate(Rutas.Actividades.ruta) }
                     )
                     MenuCardButton(
                         icon = R.drawable.tareas,
@@ -124,25 +130,7 @@ fun Principal(navigationController: NavHostController, viewModelAuth: ViewModelA
                         onClick = { navigationController.navigate(Rutas.Tareas.ruta) }
                     )
                 }
-/*
-                // Segunda fila
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    MenuCardButton(
-                        icon = R.drawable.sobrenosotros,
-                        text = stringResource(id = R.string.acerca_de),
-                        onClick = { navigationController.navigate(Rutas.AcercaDe.ruta) }
-                    )
-                    MenuCardButton(
-                        icon = R.drawable.configuracionicon,
-                        text = stringResource(id = R.string.configuracion),
-                        onClick = { navigationController.navigate(Rutas.Configuracion.ruta) }
-                    )
-                }
 
- */
                 // Tercera fila
                 Row(
                     horizontalArrangement = Arrangement.Center,
