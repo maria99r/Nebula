@@ -109,7 +109,7 @@ fun Actividades(navController: NavHostController, viewModel: ViewModelActivities
                         snackbarHostState.showSnackbar("Te has apuntado a ${activity.name}")
                     }
                 })
-                1 -> ParticipationList(userActivities, onLeave = { participation ->
+                1 -> ActivitiesList(userActivities, onLeave = { participation ->
                     // Simula eliminación con animación
                     viewModel.deleteParticipation(participation.id)
                     scope.launch {
@@ -181,66 +181,3 @@ fun ActivitiesList(
         }
     }
 }
-
-
-@Composable
-fun ParticipationList(
-    participations: List<ParticipationResponse>,
-    onJoin: (ActivityResponse) -> Unit = {},
-    onLeave: (ActivityResponse) -> Unit = {},
-    isUserActivity: Boolean = false
-) {
-    val context = LocalContext.current
-
-    if (participations.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    } else {
-        LazyColumn {
-            items(participations, key = { it.id }) { paticipation ->
-                var visible by remember { mutableStateOf(true) }
-
-                AnimatedVisibility(
-                    visible = visible,
-                    exit = fadeOut()
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth()
-                            .animateContentSize(),
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(paticipation.activity.name, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(paticipation.activity.description)
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("Lugar: ${paticipation.activity.place}")
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                IconButton(onClick = {
-                                    if (isUserActivity) {
-                                        visible = false
-                                        onLeave(paticipation.activity)
-                                    } else {
-                                        onJoin(paticipation.activity)
-                                    }
-                                }) {
-                                    Icon(
-                                        if (isUserActivity) Icons.Default.Close else Icons.Default.Check,
-                                        contentDescription = if (isUserActivity) "Borrarse" else "Apuntarse"
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-

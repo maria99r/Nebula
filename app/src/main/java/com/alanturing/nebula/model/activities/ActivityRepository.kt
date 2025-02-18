@@ -47,29 +47,16 @@ class ActivityRepository {
         }
     }
 
-    /*
-    suspend fun getActivityById( id: Int , token : String):ActivityResponse {
+    suspend fun getActivitiesByUser(tokenRequest: String, userId: Int): List<ActivityResponse> {
         return withContext(Dispatchers.IO) {
-            val registerData = activityClient.getActivityById(id)
-            ActivityResponse(
-                registerData.body()?.id ?: 0,
-                registerData.body()?.name ?: "",
-                registerData.body()?.description ?: "",
-                registerData.body()?.place ?: ""
-            )
-        }
-    }*/
-
-    suspend fun getActivitiesByUser(tokenRequest: String): List<ParticipationResponse> {
-        return withContext(Dispatchers.IO) {
-            val response = activityClient.getActivityByUser("Bearer $tokenRequest") // Si requiere token en header
+            val response = activityClient.getActivityByUser("Bearer $tokenRequest", userId) // Si requiere token en header
             if (response.isSuccessful) {
                 response.body()?.map { activity ->
-                    ParticipationResponse(
+                    ActivityResponse(
                         activity.id ?: 0,
-                        activity.userId ?: 0,
-                        activity.activityId ?: 0,
-                        activity.activity ?: ActivityResponse(id = 0, name = "" , description = "" , place = "")
+                        activity.name ?: "",
+                        activity.description ?: "",
+                        activity.place ?: ""
                     )
                 } ?: emptyList()
             } else {
@@ -77,15 +64,6 @@ class ActivityRepository {
             }
         }
     }
-
-    /*
-    suspend fun deleteActivityById(id : Int, token : String) :Boolean {
-        return withContext(Dispatchers.IO) {
-            val data = activityClient.deleteActivityById(id, "Bearer $token" )
-            data.isSuccessful
-        }
-    }*/
-
 
     // PARTICIPACIONES --------------------
 
@@ -102,28 +80,11 @@ class ActivityRepository {
         }
     }
 
-    /*
-    suspend fun findParticipationsByActivityId( activityId: Int): <List<Participation> {
-        return withContext(Dispatchers.IO) {
-            val data = activityClient.findParticipationsByActivityId(activityId)
-
-        }
-    }*/
-
-    /*
-    suspend fun findParticipationsByUserId( userId: Int): <List<Participation> {
-        return withContext(Dispatchers.IO) {
-            val data = activityClient.findParticipationsByActivityId(userId)
-
-        }
-    }*/
-
     suspend fun deleteParticipationById(token: String, id : Int) :Boolean {
         return withContext(Dispatchers.IO) {
             val data = activityClient.deleteParticipationById("Bearer $token", id)
             data.isSuccessful
         }
     }
-
 
 }

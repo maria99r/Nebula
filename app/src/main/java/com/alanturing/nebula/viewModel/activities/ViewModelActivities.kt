@@ -44,8 +44,8 @@ class ViewModelActivities(application: Application) : AndroidViewModel(applicati
     private var _allActivities = MutableStateFlow<List<ActivityResponse>>(emptyList())
     var allActivities : StateFlow<List<ActivityResponse>>  = _allActivities
 
-    private var _userActivities = MutableStateFlow<List<ParticipationResponse>>(emptyList())
-    var userActivities : StateFlow<List<ParticipationResponse>>  = _userActivities
+    private var _userActivities = MutableStateFlow<List<ActivityResponse>>(emptyList())
+    var userActivities : StateFlow<List<ActivityResponse>>  = _userActivities
 
     private var _accessToken = MutableStateFlow("")
     var accessToken : StateFlow<String>  = _accessToken
@@ -120,7 +120,7 @@ class ViewModelActivities(application: Application) : AndroidViewModel(applicati
     fun getUserActivities() {
         viewModelScope.launch {
             viewModelScope.launch {
-                _userActivities.value = repository.getActivitiesByUser(accessToken.value)
+                _userActivities.value = repository.getActivitiesByUser(accessToken.value, userId.value)
                 Log.i("obtener actividad de usuario", _userActivities.value.toString())
             }
         }

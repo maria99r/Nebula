@@ -27,21 +27,11 @@ interface ActivitiesClient {
     @GET("/api/activity")
     suspend fun getAllActivities(@Header("Authorization") bearerToken: String) : Response<List<ActivityResponse>>
 
-    /*
-    @GET("/api/activity/{activityId}")
-    suspend fun getActivityById(
-        @Path("iactivityId") id :Int
-    ) : Response<ActivityResponse>*/
-
-
-    @GET("/api/participation")
-    suspend fun getActivityByUser(@Header("Authorization") bearerToken: String )
-    : Response<List<ParticipationResponse>>
-
-    /*
-    @DELETE("/api/activity/{id}")
-    suspend fun deleteActivityById(@Header("Authorization") bearerToken: String, @Path("id") id: Int): Response<Boolean>
-*/
+    @GET("/api/participation/byUser/{id}")
+    suspend fun getActivityByUser(
+        @Header("Authorization") bearerToken: String,
+        @Path("userId") id :Int)
+    : Response<List<ActivityResponse>>
 
     // PARTICIPACIONES --------------------
 
@@ -50,26 +40,7 @@ interface ActivitiesClient {
                                  @Body participationRequest: ParticipationRequest
     ) : Response<ParticipationResponse>
 
-    /*
-    @GET("/api/participation/activity/{activityId}")
-    suspend fun findParticipationsByActivityId(
-        @Path("activityId") id :Int
-    ) : Response<List<Participation>>
-
-
-    @GET("/api/participation/user/{userId}")
-    suspend fun findParticipationsByUserId(
-        @Path("userId") id :Int
-    ) : Response<List<ActivityResponse>>
-
-
-    @GET("/api/participation")
-    suspend fun findAllParticipations(): List<Participation>
-    */
-
     @DELETE("/api/participation/{id}")
     suspend fun deleteParticipationById( @Header("Authorization") bearerToken: String,
         @Path("id") id: Int): Response<Boolean>
-
-
 }
