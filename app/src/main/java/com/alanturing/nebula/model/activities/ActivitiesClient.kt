@@ -27,10 +27,10 @@ interface ActivitiesClient {
     @GET("/api/activity")
     suspend fun getAllActivities(@Header("Authorization") bearerToken: String) : Response<List<ActivityResponse>>
 
-    @GET("/api/participation/byUser/{id}")
+    @GET("/api/participation/byUser/{userId}")
     suspend fun getActivityByUser(
         @Header("Authorization") bearerToken: String,
-        @Path("userId") id :Int)
+        @Path("userId") userId :Int)
     : Response<List<ActivityResponse>>
 
     // PARTICIPACIONES --------------------

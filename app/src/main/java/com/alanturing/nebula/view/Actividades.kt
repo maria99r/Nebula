@@ -108,9 +108,8 @@ fun Actividades(navController: NavHostController, viewModel: ViewModelActivities
                     scope.launch {
                         snackbarHostState.showSnackbar("Te has apuntado a ${activity.name}")
                     }
-                })
+                } )
                 1 -> ActivitiesList(userActivities, onLeave = { participation ->
-                    // Simula eliminación con animación
                     viewModel.deleteParticipation(participation.id)
                     scope.launch {
                         snackbarHostState.showSnackbar("Te has borrado de ${participation.id}")
