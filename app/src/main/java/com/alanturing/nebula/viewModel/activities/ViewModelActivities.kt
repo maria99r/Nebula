@@ -1,36 +1,18 @@
 package com.alanturing.nebula.viewModel.authentication
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.alanturing.nebula.model.activities.ActivityRepository
 import com.alanturing.nebula.model.activities.ActivityResponse
-import com.alanturing.nebula.model.activities.ParticipationResponse
-import com.alanturing.nebula.model.authentication.AuthRepository
-import com.alanturing.nebula.viewModel.authentication.ViewModelAuth.Companion.EMAIL
-import com.alanturing.nebula.viewModel.authentication.ViewModelAuth.Companion.REFRESH_TOKEN
-import com.alanturing.nebula.viewModel.authentication.ViewModelAuth.Companion.ROLE
 import com.alanturing.nebula.viewModel.authentication.ViewModelAuth.Companion.TOKEN
 import com.alanturing.nebula.viewModel.authentication.ViewModelAuth.Companion.USERID
-
 import com.alanturing.nebula.viewModel.authentication.ViewModelAuth.Companion.dataStorageAuth
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
@@ -79,39 +61,48 @@ class ViewModelActivities(application: Application) : AndroidViewModel(applicati
 
     fun createParticipation (activityId : Int){
         viewModelScope.launch {
-            if(userId.value == 0 || activityId == 0){
-                Log.i ("crear participacion", "algun id es 0")
-            }  else {
+            if (userActivities.value.any { it.id == activityId }) {
+                Log.i ("crear participacion", "ya existe la participacion")
+            } else {
+                if(userId.value == 0 || activityId == 0){
+                    Log.i ("crear participacion", "algun id es 0")
+                }  else {
 
-                val result = repository.addParticipation(userId.value, activityId, accessToken.value)
+                    val result = repository.addParticipation(userId.value, activityId, accessToken.value)
 
-                if(result.id == 0 || result.userId == 0  || result.activityId == 0  ){
-                    Log.i ("crear participacion", "el resultado no crea bien, algun id es 0")
-                }
-                else {
-                    getUserActivities()
-                    getAllActivities()
-                    Log.i("se crea bien la participacion" , result.toString())
+                    if(result.id == 0 || result.userId == 0  || result.activityId == 0  ){
+                        Log.i ("crear participacion", "el resultado no crea bien, algun id es 0")
+                    }
+                    else {
+                        getUserActivities()
+                        getAllActivities()
+                        Log.i("se crea bien la participacion" , result.toString())
+                    }
                 }
             }
         }
     }
 
-    fun deleteParticipation (id : Int){
+    fun deleteParticipation (activityId : Int){
         viewModelScope.launch {
-            if(id == 0 ){
-                Log.i ("borrar participacion", "id es 0")
-            }  else {
+            if (!userActivities.value.any { it.id == activityId }) {
+                Log.i ("borrar participacion", "la participacion no existe")
+            } else{
+                if(activityId == 0 ){
+                    Log.i ("borrar participacion", "id es 0")
+                }  else {
 
-                val result = repository.deleteParticipationById(accessToken.value, id)
+                    val result = repository.deleteParticipationById(accessToken.value, activityId, userId.value)
 
-                if(!result){
-                    Log.i ("borrar participacion", "el resultado no borra bien")
-                }
-                else {
-                    getUserActivities()
-                    getAllActivities()
-                    Log.i("borrar participacion", "se borra bien la participacion")
+                    if(!result){
+                        Log.i ("borrar participacion", "el resultado no borra bien")
+                        Log.i ("borrar participacion", result.toString())
+                    }
+                    else {
+                        getUserActivities()
+                        getAllActivities()
+                        Log.i("borrar participacion", "se borra bien la participacion")
+                    }
                 }
             }
         }

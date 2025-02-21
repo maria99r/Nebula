@@ -80,9 +80,10 @@ class ActivityRepository {
         }
     }
 
-    suspend fun deleteParticipationById(token: String, id : Int) :Boolean {
+    suspend fun deleteParticipationById(
+        token: String, activityId : Int, userId: Int) :Boolean {
         return withContext(Dispatchers.IO) {
-            val data = activityClient.deleteParticipationById("Bearer $token", id)
+            val data = activityClient.deleteParticipationById("Bearer $token", activityId, userId)
             data.isSuccessful
         }
     }

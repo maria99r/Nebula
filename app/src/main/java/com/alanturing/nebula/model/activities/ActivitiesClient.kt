@@ -40,7 +40,10 @@ interface ActivitiesClient {
                                  @Body participationRequest: ParticipationRequest
     ) : Response<ParticipationResponse>
 
-    @DELETE("/api/participation/{id}")
-    suspend fun deleteParticipationById( @Header("Authorization") bearerToken: String,
-        @Path("id") id: Int): Response<Boolean>
+    @DELETE("/api/participation/{activityId}/{userId}")
+    suspend fun deleteParticipationById(
+        @Header("Authorization") bearerToken: String,
+        @Path("activityId") activityId: Int,
+        @Path("userId") userId: Int
+    ): Response<Boolean>
 }

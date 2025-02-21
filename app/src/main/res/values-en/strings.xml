@@ -45,4 +45,8 @@
     <string name="error_crear_usuario">User can not be created</string>
     <string name="error_usuario_no_existe">No user has this email</string>
     <string name="activity">Activities</string>
+    <string name="todas_act">All</string>
+    <string name="mis_activi">My activities</string>
+    <string name="lugar">Place</string>
+    <string name="noactivity">No activities joined</string>
 </resources>
